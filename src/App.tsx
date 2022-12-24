@@ -1,7 +1,13 @@
-import React from 'react'
+import { useEffect } from 'react'
 import './App.css'
+import useMIDI from './hooks/useMIDI'
 
 function App() {
+  useMIDI();
+
+  useEffect(() => {
+    document.addEventListener('midiMessage', (e) => console.log(e.detail.data));
+  }, []);
 
   return (
     <div className="App">
@@ -9,4 +15,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
