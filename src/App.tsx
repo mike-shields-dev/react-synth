@@ -1,13 +1,11 @@
-import { useEffect } from 'react'
 import './App.css'
 import useMIDI from './hooks/useMIDI'
+import useSynth from './hooks/useSynth';
+import useKeyboardEvents from './hooks/useKeyboardEvents';
 
 function App() {
   useMIDI();
-
-  useEffect(() => {
-    document.addEventListener('midiMessage', (e) => console.log(e.detail.data));
-  }, []);
+  useSynth();
 
   return (
     <div className="App">
