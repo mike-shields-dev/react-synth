@@ -6,6 +6,7 @@ import useKeyboardEvents from './hooks/useKeyboardEvents';
 function App() {
   useMIDI();
   useSynth();
+  useKeyboardEvents();
 
   return (
     <div className="App">
