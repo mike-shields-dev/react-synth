@@ -7,23 +7,6 @@ const useMIDI = () => {
   const [midiInputs, setMidiInputs] = useState<WebMidi.MIDIInputMap>();
   const [midiOutputs, setMidiOutputs] = useState<WebMidi.MIDIOutputMap>();
 
-  const setMidiPorts = (midiAccess: WebMidi.MIDIAccess) => { 
-    setMidiInputs(midiAccess.inputs);
-    setMidiOutputs(midiAccess.outputs);
-  }
-
-  const onMidiMessage = (midiMessage: WebMidi.MIDIMessageEvent) => {
-    const midiMessageEvent = new CustomEvent('midiMessage', {
-      detail: midiMessage,
-    });
-
-    document.dispatchEvent(midiMessageEvent);
-  }
-
-  const addEventListeners = (midiInputs: WebMidi.MIDIInputMap) => {
-    midiInputs.forEach(midiInput => midiInput.addEventListener('midimessage', onMidiMessage));
-  };
-  
   useEffect(() => {
     navigator
         .requestMIDIAccess()
@@ -39,9 +22,26 @@ const useMIDI = () => {
     }
   }, [midiAccess]);
 
+  function setMidiPorts(midiAccess: WebMidi.MIDIAccess) { 
+    setMidiInputs(midiAccess.inputs);
+    setMidiOutputs(midiAccess.outputs);
+  }
+  
   useEffect(() => {
-    if (midiInputs) { addEventListeners(midiInputs) };
+    if (midiInputs) addEventListeners(midiInputs);
   }, [midiInputs]);
+
+  function addEventListeners(midiInputs: WebMidi.MIDIInputMap) {
+    midiInputs.forEach(midiInput => midiInput.addEventListener('midimessage', onMidiMessage));
+  };
+
+  function onMidiMessage(midiMessage: WebMidi.MIDIMessageEvent) {
+    const midiMessageEvent = new CustomEvent('midiMessage', {
+      detail: midiMessage,
+    });
+
+    document.dispatchEvent(midiMessageEvent);
+  }
 
   return { isRequesting, midiAccess, midiAccessError, midiInputs, midiOutputs };
 }
