@@ -10,28 +10,11 @@ index            |0 |1 |2 |3 |4 |5 |6 |7 |8 |9 |10|11|12|13|14|15|
                                                 
 */
 
-const chars = [
-    "A",
-    "W",
-    "S",
-    "E",
-    "D",
-    "F",
-    "T",
-    "G",
-    "Y",
-    "H",
-    "U",
-    "J",
-    "K",
-    "O",
-    "L",
-    "P",
-  ];
+const chars = ['A','W','S','E','D','F','T','G','Y','H','U','J','K','O','L','P'];
   
-  function qwertyKeyIndexFromChar(char: string) : number | boolean {
-    const noteIndex = chars.indexOf(char);
-    return noteIndex !== -1 && noteIndex;
-  }
+function keyIndexFromChar(char: string) : number | boolean {
+  const noteIndex = chars.indexOf(char);
+  return noteIndex !== -1 && noteIndex;
+}
   
-  export default qwertyKeyIndexFromChar;
+export default keyIndexFromChar;
