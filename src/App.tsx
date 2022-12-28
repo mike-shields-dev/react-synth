@@ -1,10 +1,10 @@
 import './App.css'
-import React from 'react';
 import useMidiAccessHandler from './hooks/useMidiAccessHandler'
 import SynthMidiMessageHandler from './hooks/SynthMidiMessageHandler';
 import KeyboardEventHandler from './hooks/KeyboardEventHandler';
 import FilterControls from './components/FilterControls';
 import WaveformControls from './components/WaveFormControls';
+import Keyboard from './components/Keyboard';
 
 function App() {
   useMidiAccessHandler();
@@ -15,6 +15,7 @@ function App() {
     <div className="App">
       <FilterControls />
       <WaveformControls />
+      <Keyboard />
     </div>
   )
 }
