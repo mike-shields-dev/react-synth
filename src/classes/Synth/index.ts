@@ -6,8 +6,8 @@ import Oscillator from '../Oscillator';
 import mapRange from '../../utils/mapRange';
 
 class Synth {
-    #filterCutoff: number = 200;
-    #filterResonance: number = 0;
+    #filterCutoff = 200;
+    #filterResonance = 0;
     #oscTypes: OmniOscillatorType[] = ['sine', 'sawtooth', 'square', 'triangle'];
     #gain = new Gain({ gain: 0.05 });
     #oscillators = [...Array(128).fill(null).map((_, i) =>
