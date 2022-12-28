@@ -1,5 +1,5 @@
-function midiControlChangeToFrequency(value: number) {
-    const minFrequency = 4;
+function midiControlChangeToFrequency({ value = 127, precision = 1 }) {
+    const minFrequency = 19;
     const maxFrequency = 20000;
 
     if (value < 0) value = 0;
@@ -7,7 +7,9 @@ function midiControlChangeToFrequency(value: number) {
 
     let logValue = Math.log(value + 1) / Math.log(128);
     
-    return ~~Math.exp(logValue * Math.log(maxFrequency - minFrequency)) + minFrequency;
+    const frequency = Math.exp(logValue * Math.log(maxFrequency - minFrequency)) + minFrequency;
+
+    return Math.round(frequency * precision) / precision;
 }
   
   

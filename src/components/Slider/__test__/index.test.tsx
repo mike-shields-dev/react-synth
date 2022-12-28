@@ -19,12 +19,11 @@ describe('Slider Component', () => {
         expect(screen.getByLabelText(`${props.paramName}`, { selector: 'input' })).toBeInTheDocument();
     });
 
-    test('only allows the user to select integers between 0 and 127', async () => {
+    test('only allows the user to select values between 0 and 127', async () => {
         const inputEl = screen.getByRole('slider'); 
         
         expect(inputEl.getAttribute('min')).toEqual('0');
         expect(inputEl.getAttribute('max')).toEqual('127');
-        expect(inputEl.getAttribute('step')).toEqual('1');
 
         fireEvent.change(inputEl, { target: { value: "128" } });
         expect(inputEl).toHaveValue("127");

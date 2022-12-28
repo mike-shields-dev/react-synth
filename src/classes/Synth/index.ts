@@ -64,12 +64,9 @@ class Synth {
         this.#gain.toDestination();
     }
 
-    onNoteOn([noteNumber, velocity]: number[]) {
+    onNoteOn([noteNumber, velocity = 0]: number[]) {
         const osc = this.#oscillators[noteNumber];
         if (osc.isActive) return;
-
-        if (!velocity) velocity = 0;
-
         osc.set({ filterEnvelope: { baseFrequency: this.#filterCutoff } });
         osc.noteOn();
     }
@@ -87,14 +84,14 @@ class Synth {
     }
 
     onResonance(controlValue: number) {
-        this.#filterResonance = midiControlValueToResonance(controlValue);
+        this.#filterResonance = midiControlValueToResonance({ value: controlValue });
         this.#oscillators.forEach(osc =>
             osc.set({ filter: { Q: this.#filterResonance } })
         );
     }
 
     onCutoff(controlValue: number) {
-        this.#filterCutoff = midiControlValueToFrequency(controlValue);
+        this.#filterCutoff = midiControlValueToFrequency({ value: controlValue });
         this.#oscillators.forEach(osc => 
             !osc.isSilent &&
             osc.set({ filterEnvelope: { baseFrequency: this.#filterCutoff } })
