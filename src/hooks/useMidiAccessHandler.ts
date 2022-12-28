@@ -32,15 +32,13 @@ const useMIDI = () => {
   }, [midiInputs]);
 
   function addEventListeners(midiInputs: WebMidi.MIDIInputMap) {
-    midiInputs.forEach(midiInput => midiInput.addEventListener('midimessage', onMidiMessage));
+    midiInputs.forEach(midiInput => midiInput.addEventListener('midimessage', emitMidiMessage));
   };
 
-  function onMidiMessage(midiMessage: WebMidi.MIDIMessageEvent) {
-    const midiMessageEvent = new CustomEvent('midiMessage', {
+  function emitMidiMessage(midiMessage: WebMidi.MIDIMessageEvent) {
+    document.dispatchEvent(new CustomEvent('midiMessage', {
       detail: midiMessage,
-    });
-
-    document.dispatchEvent(midiMessageEvent);
+    }));
   }
 
   return { isRequesting, midiAccess, midiAccessError, midiInputs, midiOutputs };

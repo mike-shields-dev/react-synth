@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import keyIndexFromChar from '../utils/keyIndexFromChar';
+import emitMidiMessage from '../utils/emitMidiMessage';
 
 function useKeyboardEvents() {
     const [octave, setOctave] = useState(5);
@@ -48,14 +49,9 @@ function useKeyboardEvents() {
         const noteNumber = keyIndex + octave * 12;
         if (noteNumber < 0 || noteNumber > 127) return;
         
-        const [status, data1, data2] = [144, noteNumber, velocity];
+        const [statusByte, dataByte1, dataByte2] = [144, noteNumber, velocity];
         
-        const noteOnEvent = new CustomEvent(
-            'midiMessage',
-            { detail: { data: [status, data1, data2] } }
-        )
-        
-        document.dispatchEvent(noteOnEvent);
+        emitMidiMessage([statusByte, dataByte1, dataByte2]);
     }
 
     function onNoteOff(e: KeyboardEvent) { 
@@ -65,14 +61,9 @@ function useKeyboardEvents() {
         const noteNumber = keyIndex + octave * 12;
         if (noteNumber < 0 || noteNumber > 127) return;
         
-        const [status, data1] = [128, noteNumber];
-        
-        const noteOffEvent = new CustomEvent(
-            'midiMessage',
-            { detail: { data: [status, data1] } }
-        )   
+        const [statusByte, dataByte1] = [128, noteNumber];
             
-        document.dispatchEvent(noteOffEvent);
+        emitMidiMessage([statusByte, dataByte1]);
     }
 }
 

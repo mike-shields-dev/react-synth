@@ -1,12 +1,13 @@
 import './App.css'
-import useMIDI from './hooks/useMIDI'
-import useSynth from './hooks/useSynth';
-import useKeyboardEvents from './hooks/useKeyboardEvents';
+import React from 'react';
+import useMidiAccessHandler from './hooks/useMidiAccessHandler'
+import SynthMidiMessageHandler from './hooks/SynthMidiMessageHandler';
+import KeyboardEventHandler from './hooks/KeyboardEventHandler';
 
 function App() {
-  useMIDI();
-  useSynth();
-  useKeyboardEvents();
+  useMidiAccessHandler();
+  SynthMidiMessageHandler();
+  KeyboardEventHandler();
 
   return (
     <div className="App">
