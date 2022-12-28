@@ -10,8 +10,8 @@ class Synth {
     #filterResonance = 0;
     #oscTypes: OmniOscillatorType[] = ['sine', 'sawtooth', 'square', 'triangle'];
     #gain = new Gain({ gain: 0.05 });
-    #oscillators = [...Array(128).fill(null).map((_, i) =>
-        new Oscillator({
+    #oscillators = [...Array(128).fill(null).map((_, noteNumber) => 
+        new Oscillator(noteNumber, {
             oscillator: {
                 type: this.oscTypes[0],
                 volume: 1,
@@ -52,7 +52,8 @@ class Synth {
             onsilence: () => null,
             portamento: 0,
             volume: 0,
-        }, i)
+        },
+        )
     )];
 
     get oscTypes() {

@@ -7,7 +7,7 @@ class Oscillator extends MonoSynth {
     #isSilent: boolean = true;
     #noteFrequency: number = 0;
 
-    constructor(options: MonoSynthOptions, noteNumber: number) { 
+    constructor(noteNumber: number, options: MonoSynthOptions) { 
         super(options);
 
         this.#noteFrequency = midiNoteNumberToNoteFrequency(noteNumber, 1000);
