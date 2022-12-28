@@ -24,7 +24,7 @@ specifiers:
   prettier: ^2.8.1
   react: ^18.2.0
   react-dom: ^18.2.0
-  tone: ^14.8.49
+  tone: ^14.7.77
   typescript: ^4.9.3
   vite: latest
   vitest: latest
@@ -32,7 +32,7 @@ specifiers:
 dependencies:
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
-  tone: 14.8.49
+  tone: 14.7.77
 
 devDependencies:
   '@testing-library/dom': 8.19.0
@@ -3541,8 +3541,8 @@ packages:
       is-number: 7.0.0
     dev: true
 
-  /tone/14.8.49:
-    resolution: {integrity: sha512-L5YLleEFvkuBYQ83eEL0Fg5DSQS7B28v32sYejnnl8b9yXSytM1X/jNJM1DrB525JGwFb5Pmq5OYZPD9oYQbCQ==}
+  /tone/14.7.77:
+    resolution: {integrity: sha512-tCfK73IkLHyzoKUvGq47gyDyxiKLFvKiVCOobynGgBB9Dl0NkxTM2p+eRJXyCYrjJwy9Y0XCMqD3uOYsYt2Fdg==}
     dependencies:
       standardized-audio-context: 25.3.36
       tslib: 2.4.1
