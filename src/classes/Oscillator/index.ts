@@ -1,4 +1,5 @@
 import { MonoSynth, MonoSynthOptions } from 'tone';
+import { OmniOscillatorType } from 'tone/build/esm/source/oscillator/OscillatorInterface';
 import midiNoteNumberToNoteFrequency from '../../utils/noteNumberToFrequency';
 
 class Oscillator extends MonoSynth {
@@ -45,6 +46,10 @@ class Oscillator extends MonoSynth {
         this.triggerRelease();
         this.filterEnvelope.triggerRelease();
         this.isActive = false;
+    }
+
+    set waveform(type: OmniOscillatorType) {
+        this.oscillator.type = type;
     }
 }
  

@@ -1,16 +1,19 @@
-import { Gain, BaseContext} from 'tone';
+import { Gain } from 'tone';
+import { OmniOscillatorType } from 'tone/build/esm/source/oscillator/OscillatorInterface';
 import midiControlValueToFrequency from '../../utils/controlValueToFrequency';
 import midiControlValueToResonance from '../../utils/controlValueToResonance';
 import Oscillator from '../Oscillator';
+import mapRange from '../../utils/mapRange';
 
 class Synth {
     #filterCutoff: number = 200;
     #filterResonance: number = 0;
+    #oscTypes: OmniOscillatorType[] = ['sine', 'sawtooth', 'square', 'triangle'];
     #gain = new Gain({ gain: 0.05 });
     #oscillators = [...Array(128).fill(null).map((_, i) =>
         new Oscillator({
             oscillator: {
-                type: 'sawtooth',
+                type: this.oscTypes[0],
                 volume: 1,
                 phase: 0,
                 mute: false,
@@ -52,6 +55,10 @@ class Synth {
         }, i)
     )];
 
+    get oscTypes() {
+        return this.#oscTypes;
+    }
+
     toDestination() {
         this.#oscillators.forEach(oscillator => oscillator.connect(this.#gain));
         this.#gain.toDestination();
@@ -74,6 +81,7 @@ class Synth {
     }
 
     onControlChange([controlNumber, controlValue]: number[]) {
+        if (controlNumber === 21) return this.onOscType(controlValue);
         if (controlNumber === 71) return this.onResonance(controlValue);
         if (controlNumber === 74) return this.onCutoff(controlValue);
     }
@@ -90,6 +98,19 @@ class Synth {
         this.#oscillators.forEach(osc => 
             !osc.isSilent &&
             osc.set({ filterEnvelope: { baseFrequency: this.#filterCutoff } })
+        );
+    }
+
+    onOscType(controlValue: number) {
+        const index = Math.floor(
+            mapRange({
+                value: +controlValue,
+                inRangeMin: 0, inRangeMax: 127,
+                outRangeMin: 0, outRangeMax: this.oscTypes.length - 1
+            })
+        )
+        this.#oscillators.forEach(osc =>
+            osc.oscillator.type = this.oscTypes[index]
         );
     }
 }

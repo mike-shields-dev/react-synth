@@ -4,6 +4,7 @@ import useMidiAccessHandler from './hooks/useMidiAccessHandler'
 import SynthMidiMessageHandler from './hooks/SynthMidiMessageHandler';
 import KeyboardEventHandler from './hooks/KeyboardEventHandler';
 import FilterControls from './components/FilterControls';
+import WaveformControls from './components/WaveFormControls';
 
 function App() {
   useMidiAccessHandler();
@@ -13,6 +14,7 @@ function App() {
   return (
     <div className="App">
       <FilterControls />
+      <WaveformControls />
     </div>
   )
 }

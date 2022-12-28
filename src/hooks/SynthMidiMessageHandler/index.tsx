@@ -1,14 +1,10 @@
 import { useEffect } from "react";
-import Synth from "../classes/Synth";
-import isCustomEvent from "../utils/isCustomEvent";
-
-const synth = new Synth();
-synth.toDestination();
+import isCustomEvent from "../../utils/isCustomEvent";
+import synth from '../../synthInstance';
 
 function SynthMidiMessageHandler() {
     function onMidiMessage(e: Event) {
         if (!isCustomEvent(e)) return;
-        
         const [statusByte, dataByte1, dataByte2] = e.detail.data;
 
         if (statusByte === 144) {
@@ -29,7 +25,9 @@ function SynthMidiMessageHandler() {
         document.addEventListener('midiMessage', onMidiMessage);
         return () => 
         document.removeEventListener('midiMessage', onMidiMessage);
-     }, []);
+    }, []);
+    
+    return null;
 }
 
 export default SynthMidiMessageHandler;
