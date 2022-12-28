@@ -1,0 +1,32 @@
+.Keyboard {
+    --key-width: /* set by JS in Keyboard component */ ;
+    --key-outline-default: inset 0px 0px 0px 1px #aaa;
+    --key-outline-active: inset 0px 0px 0px 4px rgb(255, 119, 0);
+    --key-radius: 0 0 0.5rem 0.5rem;
+  
+    height: 200px;
+    margin: 0 auto;
+    max-width: 600px;
+    position: relative;
+    width: 100vw;
+}
+  
+.MajorKey {
+    background: #eee;
+    border: none;
+    box-shadow: var(--key-outline-default);
+    border-radius: var(--key-radius);
+    height: 100%;
+    position: absolute;
+    width: var(--key-width);
+}
+
+.MinorKey {
+    background: #000;
+    border: none;
+    border-radius: var(--key-radius);
+    box-shadow: var(--key-outline-default);
+    height: 65%;
+    position: absolute;
+    width: calc(var(--key-width) / 2);
+}
