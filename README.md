@@ -11,4 +11,4 @@ A browser based Synthesizer (Musical Instrument), controllable via a GUI or usin
 - [Web MIDI API](https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API)
 - [React](https://reactjs.org/)
 
-
+- [Full list of dependencies](https://github.com/mike-shields-dev/react-synth/network/dependencies)
