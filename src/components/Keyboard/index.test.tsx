@@ -24,8 +24,8 @@ describe('Keyboard', () => {
             
             keys.forEach((key, i) => {
                 const octave = 5;
-                const noteNumber = +key.value + (octave * 12);
                 const statusByte = 144;
+                const noteNumber = +key.value + (octave * 12);
                 const velocity = 80;
 
                 fireEvent.mouseDown(key);
