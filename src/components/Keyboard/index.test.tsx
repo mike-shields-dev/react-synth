@@ -11,6 +11,7 @@ document.addEventListener('midiMessage', midiMessageMock);
 describe('Keyboard', () => {
     beforeEach(() => render(<Keyboard />));
     afterEach(() => vi.clearAllMocks());
+    afterAll(() => window.removeEventListener('midiMessage', midiMessageMock));
     
     describe('keys', () => {
         test('displays a button for each key in an octave', () => {
