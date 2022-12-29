@@ -2,7 +2,7 @@ import { describe, test, expect, vi} from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Keyboard from '.';
 
-let midiMessageMock = vi.fn((e: CustomEvent) => {
+const midiMessageMock = vi.fn((e: CustomEvent) => {
     return { type: e.type, data: e.detail.data };
 });
 
