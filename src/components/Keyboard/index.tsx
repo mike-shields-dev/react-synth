@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import emitMidiMessage from '../../utils/emitMidiMessage';
 import isCustomEvent from '../../utils/isCustomEvent';
 import css from './style.module.css';
-import synth from '../../synthInstance';
 
 const keyboardWidth = 100;
 const numMajorKeys = 7;
@@ -48,7 +47,7 @@ function Keyboard() {
         // console.log(e.detail.data);
     }
 
-    function onNote (e: React.MouseEvent) {
+    function onNote(e: React.MouseEvent) {
         const { value } = (e.target as HTMLButtonElement);
         const noteNumber = +value + octave * 12;
         if (noteNumber < 0 || noteNumber > 127) return;
@@ -58,7 +57,8 @@ function Keyboard() {
         if (e.type === 'mousedown') statusByte = 144;
         if (e.type === 'mouseup' || e.type === 'mouseleave') statusByte = 128;
  
-        emitMidiMessage([statusByte, noteNumber, 80]);
+        if (statusByte === 144) emitMidiMessage([statusByte, noteNumber, 80]);
+        if (statusByte === 128) emitMidiMessage([statusByte, noteNumber, 0]);
     };
 
     return (
@@ -66,6 +66,7 @@ function Keyboard() {
             <div className={css.Keyboard} ref={keyboardRef}>
                 {keys.map(key =>
                     <button
+                        name="key"
                         key={`key${key.name}`}
                         className={`${css[key.className]}`}
                         value={key.value}
