@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import useMidiMessageListener from "../useMidiMessageListener";
 import isCustomEvent from "../../utils/isCustomEvent";
 import synth from '../../synthInstance';
 
@@ -6,6 +6,8 @@ function SynthMidiMessageHandler() {
     function onMidiMessage(e: Event) {
         if (!isCustomEvent(e)) return;
         const [statusByte, dataByte1, dataByte2] = e.detail.data;
+
+        console.log([statusByte, dataByte1, dataByte2]);
 
         if (statusByte === 144) {
             const [noteNumber, velocity] = [dataByte1, dataByte2];
@@ -21,11 +23,7 @@ function SynthMidiMessageHandler() {
         };
     };
 
-    useEffect(() => {
-        document.addEventListener('midiMessage', onMidiMessage);
-        return () => 
-        document.removeEventListener('midiMessage', onMidiMessage);
-    }, []);
+    useMidiMessageListener(onMidiMessage);
     
     return null;
 }

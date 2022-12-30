@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import isCustomEvent from '../../utils/isCustomEvent';
 import emitMidiMessage from '../../utils/emitMidiMessage';
 import mapRange from '../../utils/mapRange';
+import useMidiMessageListener from '../../hooks/useMidiMessageListener';
 
 interface Props { 
     paramName: string;
@@ -31,9 +32,7 @@ function ComboBox(props: Props) {
         emitMidiMessage([statusByte, dataByte1, dataByte2]);
     }
 
-    useEffect(() => {
-        document.addEventListener('midiMessage', onMidiMessage);
-    }, []);
+    useMidiMessageListener(onMidiMessage);
 
     function onMidiMessage(e: Event) {
         if (!isCustomEvent(e)) return;

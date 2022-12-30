@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import isCustomEvent from "../../utils/isCustomEvent";
 import emitMidiMessage from "../../utils/emitMidiMessage";
+import useMidiMessageListener from "../../hooks/useMidiMessageListener";
 
 
 interface Props { 
@@ -40,13 +41,7 @@ function Slider(props: Props) {
         emitMidiMessage([statusByte, dataByte1, dataByte2]);
     }
 
-    useEffect(() => {
-        document.addEventListener('midiMessage', onMidiMessage);
-        
-        return () => {
-            document.removeEventListener('midiMessage', onMidiMessage);
-        };
-    }, []);
+    useMidiMessageListener(onMidiMessage);
 
     return (
         <>
