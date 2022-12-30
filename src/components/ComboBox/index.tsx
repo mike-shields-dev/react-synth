@@ -11,7 +11,13 @@ interface Props {
     options: string[];
 }
 
-function ComboBox(props: Props) {
+function ComboBox({
+    paramName,
+    statusByte,
+    controlNumber,
+    options
+}: Props) {
+    
     const [value, setValue] = useState(0);
 
     function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -19,17 +25,15 @@ function ComboBox(props: Props) {
         
         setValue(+value);
 
-        const controlValue = 
-            mapRange({
-                value: +value,
-                inRangeMin: 0, inRangeMax: props.options.length - 1,
-                outRangeMin: 0, outRangeMax: 127
-            })
+        const controlValue = mapRange({
+            value: +value,
+            inRangeMin: 0,
+            inRangeMax: options.length - 1,
+            outRangeMin: 0,
+            outRangeMax: 127
+        })
 
-        const [statusByte, dataByte1, dataByte2] =
-            [props.statusByte, props.controlNumber, +controlValue]
-
-        emitMidiMessage([statusByte, dataByte1, dataByte2]);
+        emitMidiMessage([statusByte, controlNumber, controlValue]);
     }
 
     useMidiMessageListener(onMidiMessage);
@@ -37,23 +41,28 @@ function ComboBox(props: Props) {
     function onMidiMessage(e: Event) {
         if (!isCustomEvent(e)) return;
 
-        const [statusByte, controlNumber, controlValue] = e.detail.data;
-        if (statusByte !== props.statusByte || controlNumber !== props.controlNumber) return; 
+        const [eStatusByte, eControlNumber, eControlValue] = e.detail.data;
+        if (eStatusByte !== statusByte || eControlNumber !== controlNumber) return; 
         
         setValue(Math.floor(
             mapRange({
-                value: +controlValue,
+                value: +eControlValue,
                 inRangeMin: 0, inRangeMax: 127,
-                outRangeMin: 0, outRangeMax: props.options.length - 1
+                outRangeMin: 0, outRangeMax: options.length - 1
             }))
         );
     }
 
     return (<>
-        <label htmlFor={props.paramName}>{props.paramName}</label>
-        <select id={props.paramName} onChange={onChange} value={value}>
-            {props.options.map((option, i) =>
-                <option key={`${props.paramName}:${option}`} value={i}>
+        <label htmlFor={paramName}>{paramName}</label>
+        <select
+            id={paramName}
+            onChange={onChange}
+            value={value}>
+            {options.map((option, i) =>
+                <option
+                    key={`${paramName}:${option}`} 
+                    value={i}>
                     {option}
                 </option>
             )}
