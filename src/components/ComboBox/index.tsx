@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import isCustomEvent from '../../utils/isCustomEvent';
-import emitMidiMessage from '../../utils/emitMidiMessage';
+import { v4 as uuidv4 } from 'uuid';
+import { usePublish, useSubscribe } from '../../hooks/PubSub';
 import mapRange from '../../utils/mapRange';
-import useMidiMessageListener from '../../hooks/useMidiMessageListener';
 
 interface Props { 
     paramName: string;
@@ -11,14 +10,34 @@ interface Props {
     options: string[];
 }
 
-function ComboBox({
-    paramName,
-    statusByte,
-    controlNumber,
-    options
-}: Props) {
-    
+interface MidiMessage {
+    messageId: string;
+    data: [number, number, number];
+}
+
+const messageId = uuidv4();
+
+function ComboBox(props: Props) {
     const [value, setValue] = useState(0);
+
+    useSubscribe('midiMessage', onMidiMessage);
+
+    function onMidiMessage(_topic: PubSubJS.Message, payload: MidiMessage) {
+        if (payload.messageId === messageId) return;
+
+        const [statusByte, dataByte1, dataByte2] = payload.data;
+        
+        if (statusByte !== props.statusByte) return;
+        if (dataByte1 !== props.controlNumber) return; 
+        
+        setValue(Math.floor(
+            mapRange({
+                value: +dataByte2,
+                inRangeMin: 0, inRangeMax: 127,
+                outRangeMin: 0, outRangeMax: props.options.length - 1
+            }))
+        );
+    }
 
     function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
         const { value } = e.target;
@@ -28,42 +47,28 @@ function ComboBox({
         const controlValue = mapRange({
             value: +value,
             inRangeMin: 0,
-            inRangeMax: options.length - 1,
+            inRangeMax: props.options.length - 1,
             outRangeMin: 0,
             outRangeMax: 127
-        })
+        });
 
-        emitMidiMessage([statusByte, controlNumber, controlValue]);
-    }
-
-    useMidiMessageListener(onMidiMessage);
-
-    function onMidiMessage(e: Event) {
-        if (!isCustomEvent(e)) return;
-
-        const [eStatusByte, eControlNumber, eControlValue] = e.detail.data;
-        if (eStatusByte !== statusByte || eControlNumber !== controlNumber) return; 
-        
-        setValue(Math.floor(
-            mapRange({
-                value: +eControlValue,
-                inRangeMin: 0, inRangeMax: 127,
-                outRangeMin: 0, outRangeMax: options.length - 1
-            }))
-        );
+        usePublish('midiMessage', {
+            messageId,
+            data: [props.statusByte, props.controlNumber, controlValue]
+        });
     }
 
     return (<>
-        <label htmlFor={paramName}>{paramName}</label>
+        <label htmlFor={props.paramName}>{props.paramName}</label>
         <select
-            id={paramName}
+            id={props.paramName}
             onChange={onChange}
             value={value}>
-            {options.map((option, i) =>
+            {props.options.map((option, i) =>
                 <option
-                    key={`${paramName}:${option}`} 
+                    key={`${props.paramName}:${option}`} 
                     value={i}>
-                    {option}
+                        {option}
                 </option>
             )}
         </select>

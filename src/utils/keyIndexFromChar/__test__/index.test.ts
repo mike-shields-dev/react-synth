@@ -7,8 +7,10 @@ describe('keyIndexFromChar', () => {
     });
 
     test('returns the boolean value false when given a invalid character', () => {
-        invalidChars.forEach((char) =>
-            expect(keyIndexFromChar(char)).toEqual(false));
+        invalidChars.forEach((char) => {
+            expect(typeof keyIndexFromChar(char)).toBe('boolean');
+            expect(keyIndexFromChar(char)).toEqual(false);
+        });
     });
 });
 
