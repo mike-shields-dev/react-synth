@@ -1,13 +1,14 @@
-import useMidiMessageListener from "../useMidiMessageListener";
-import isCustomEvent from "../../utils/isCustomEvent";
 import synth from '../../synthInstance';
+import { useSubscribe } from "../PubSub";
+
+interface MidiMessage {
+    id: string;
+    data: [number, number, number];
+}
 
 function SynthMidiMessageHandler() {
-    function onMidiMessage(e: Event) {
-        if (!isCustomEvent(e)) return;
-        const [statusByte, dataByte1, dataByte2] = e.detail.data;
-
-        console.log([statusByte, dataByte1, dataByte2]);
+    function onMidiMessage(_topic: string, payload: MidiMessage) {
+        const [statusByte, dataByte1, dataByte2] = payload.data;
 
         if (statusByte === 144) {
             const [noteNumber, velocity] = [dataByte1, dataByte2];
@@ -23,7 +24,7 @@ function SynthMidiMessageHandler() {
         };
     };
 
-    useMidiMessageListener(onMidiMessage);
+    useSubscribe('midiMessage', onMidiMessage);
     
     return null;
 }

@@ -1,7 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
-import emitMidiMessage from '../../utils/emitMidiMessage';
-import isCustomEvent from '../../utils/isCustomEvent';
+import { v4 as uuidv4 } from 'uuid';
+import { usePublish, useSubscribe } from '../../hooks/PubSub';
 import css from './style.module.css';
+
+interface MidiMessage {
+    messageId: string;
+    data: [number, number, number];
+}
+
+const messageId = uuidv4();
 
 const keyboardWidth = 100;
 const numMajorKeys = 7;
@@ -20,7 +27,7 @@ const keys = [
     { name: 'Gb', leftOffset: 3.75, value: 6, className: "MinorKey" },
     { name: 'Ab', leftOffset: 4.75, value: 8, className: "MinorKey" },
     { name: 'Bb', leftOffset: 5.75, value: 10, className: "MinorKey" },
-  ];
+];
 
 function Keyboard() {
     const keyboardRef = useRef<HTMLDivElement>(null);
@@ -33,32 +40,38 @@ function Keyboard() {
             "--key-width",
             `calc(${keyboardWidth}% / ${numMajorKeys})`
         );
-
-        document.addEventListener('midiMessage', onMidiMessage);
-
-        return () =>
-        document.removeEventListener('midiMessage', onMidiMessage);
     }, []);
 
-    function onMidiMessage(e: CustomEvent) {
-        if (!isCustomEvent(e)) return;
+    useSubscribe('midiMessage', onMidiMessage);
+    
+    function onMidiMessage(_topic: PubSubJS.Message, payload: MidiMessage) {
+        if (payload.messageId === messageId) return;
+        
         // get the currently active note 
         // and use it to display which key is active
         // console.log(e.detail.data);
     }
 
-    function onNote(e: React.MouseEvent) {
+    function onNote(e: React.MouseEvent) {        
         const { value } = (e.target as HTMLButtonElement);
         const noteNumber = +value + octave * 12;
+        
         if (noteNumber < 0 || noteNumber > 127) return;
 
-        let statusByte = 0;
+        let statusByte = -1;
 
         if (e.type === 'mousedown') statusByte = 144;
         if (e.type === 'mouseup' || e.type === 'mouseleave') statusByte = 128;
  
-        if (statusByte === 144) emitMidiMessage([statusByte, noteNumber, 80]);
-        if (statusByte === 128) emitMidiMessage([statusByte, noteNumber, 0]);
+        if (statusByte === 144) usePublish('midiMessage', {
+            messageId,
+            data: [statusByte, noteNumber, 80]
+        });
+        
+        if (statusByte === 128) usePublish('midiMessage', {
+            messageId,
+            data: [statusByte, noteNumber, 0]
+        });
     };
 
     return (

@@ -1,8 +1,11 @@
-import React, { useState } from "react"
-import isCustomEvent from "../../utils/isCustomEvent";
-import emitMidiMessage from "../../utils/emitMidiMessage";
-import useMidiMessageListener from "../../hooks/useMidiMessageListener";
+import React, { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
+import { usePublish, useSubscribe } from '../../hooks/PubSub';
 
+interface MidiMessage {
+    messageId: string;
+    data: [number, number, number];
+}
 
 interface Props { 
     paramName: string;
@@ -10,19 +13,24 @@ interface Props {
     controlNumber: number;
     readout: ({ value, precision }: readoutArgs) => number;
 }
+
 interface readoutArgs {
     value: number;
     precision: number;
 }
 
+const messageId = uuidv4();
+
 function Slider(props: Props) { 
     const [sliderValue, setSliderValue] = useState(65);
     const [readout, setReadout] = useState(0);
 
-    function onMidiMessage(e: Event) {
-        if(!isCustomEvent(e)) return;
+    useSubscribe('midiMessage', onMidiMessage);
 
-        const [statusByte, controlNumber, controlValue] = e.detail.data;
+    function onMidiMessage(_topic: PubSubJS.Message, payload: MidiMessage) {
+        if (payload.messageId === messageId) return;
+        
+        const [statusByte, controlNumber, controlValue] = payload.data;
         if (+statusByte !== props.statusByte || +controlNumber !== props.controlNumber) return;
         
         setSliderValue(+controlValue);
@@ -38,10 +46,12 @@ function Slider(props: Props) {
             = [props.statusByte, props.controlNumber, +controlValue];
         
         setReadout(props.readout({value: +controlValue, precision: 1}));
-        emitMidiMessage([statusByte, dataByte1, dataByte2]);
+        
+        usePublish('midiMessage', {
+            messageId,
+            data: [statusByte, dataByte1, dataByte2]
+        });
     }
-
-    useMidiMessageListener(onMidiMessage);
 
     return (
         <>

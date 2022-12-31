@@ -1,25 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import keyIndexFromChar from '../utils/keyIndexFromChar';
-import emitMidiMessage from '../utils/emitMidiMessage';
+import { usePublish } from './PubSub';
+import useKeyboardEventListeners from './useKeyboardEventListeners';
+
+const messageId = uuidv4();
 
 function useKeyboardEvents() {
     const [octave, setOctave] = useState(5);
     const [velocity, setVelocity] = useState(80);
     
-    useEffect(() => {
-        addListeners();
-        return () => removeListeners();
-    }, []);
-    
-    function addListeners() { 
-        document.addEventListener('keydown', onKey);
-        document.addEventListener('keyup', onKey);
-    }
-
-    function removeListeners() {
-        document.removeEventListener('keydown', onKey);
-        document.removeEventListener('keyup', onKey);
-    }
+    useKeyboardEventListeners(onKey);
 
     function onKey(e: KeyboardEvent) { 
         if (!e.getModifierState('CapsLock')) return;
@@ -51,7 +42,10 @@ function useKeyboardEvents() {
         
         const [statusByte, dataByte1, dataByte2] = [144, noteNumber, velocity];
         
-        emitMidiMessage([statusByte, dataByte1, dataByte2]);
+        usePublish('midiMessage', {
+            messageId,
+            data: [statusByte, dataByte1, dataByte2]
+        });
     }
 
     function onNoteOff(e: KeyboardEvent) { 
@@ -63,7 +57,10 @@ function useKeyboardEvents() {
         
         const [statusByte, dataByte1] = [128, noteNumber];
             
-        emitMidiMessage([statusByte, dataByte1]);
+        usePublish('midiMessage', {
+            messageId,
+            data: [statusByte, dataByte1]
+        });
     }
 }
 
