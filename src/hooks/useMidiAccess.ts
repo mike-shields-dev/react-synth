@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react"
+import { usePublish } from "./PubSub";
+import { v4 as uuidv4 } from 'uuid';
+
+const messageId = uuidv4();
 
 const useMIDI = () => { 
   const [isRequesting, setIsRequesting] = useState(true);
@@ -36,9 +40,11 @@ const useMIDI = () => {
   };
 
   function emitMidiMessage(midiMessage: WebMidi.MIDIMessageEvent) {
-    document.dispatchEvent(new CustomEvent('midiMessage', {
-      detail: midiMessage,
-    }));
+    const [statusByte, dataByte1, dataByte2] = midiMessage.data;
+    usePublish('midiMessage', {
+      messageId, 
+      data: [statusByte, dataByte1, dataByte2]
+    })
   }
 
   return { isRequesting, midiAccess, midiAccessError, midiInputs, midiOutputs };
