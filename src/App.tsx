@@ -1,14 +1,14 @@
-import './App.css'
-import useMidiAccessHandler from './hooks/useMidiAccessHandler'
-import SynthMidiMessageHandler from './hooks/SynthMidiMessageHandler';
-import KeyboardEventHandler from './hooks/KeyboardEventHandler';
+import './App.css';
 import FilterControls from './components/FilterControls';
-import WaveformControls from './components/WaveFormControls';
 import Keyboard from './components/Keyboard';
+import WaveformControls from './components/WaveFormControls';
+import KeyboardEventHandler from './hooks/KeyboardEventHandler';
+import MidiStatusHandler from './hooks/MidiStatusHandler';
+import useMidiAccess from './hooks/useMidiAccess';
 
 function App() {
-  useMidiAccessHandler();
-  SynthMidiMessageHandler();
+  useMidiAccess();
+  MidiStatusHandler();
   KeyboardEventHandler();
 
   return (
