@@ -6,10 +6,10 @@ interface MidiMessage {
     data: [number, number, number];
 }
 
-function SynthMidiMessageHandler() {
+function MidiStatusHandler() {
     function onMidiMessage(_topic: string, payload: MidiMessage) {
         const [statusByte, dataByte1, dataByte2] = payload.data;
-
+        
         if (statusByte === 144) {
             const [noteNumber, velocity] = [dataByte1, dataByte2];
             return synth.onNoteOn([noteNumber, velocity])
@@ -29,4 +29,4 @@ function SynthMidiMessageHandler() {
     return null;
 }
 
-export default SynthMidiMessageHandler;
+export default MidiStatusHandler;
