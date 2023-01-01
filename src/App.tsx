@@ -5,6 +5,7 @@ import WaveformControls from './components/WaveFormControls';
 import KeyboardEventHandler from './hooks/KeyboardEventHandler';
 import MidiStatusHandler from './hooks/MidiStatusHandler';
 import useMidiAccess from './hooks/useMidiAccess';
+import MainPanel from './components/MainPanel';
 
 function App() {
   useMidiAccess();
@@ -13,9 +14,11 @@ function App() {
 
   return (
     <div className="App">
-      <FilterControls />
-      <WaveformControls />
-      <Keyboard />
+      <MainPanel>
+        <FilterControls />
+        <WaveformControls />
+        <Keyboard />
+      </MainPanel>
     </div>
   )
 }
