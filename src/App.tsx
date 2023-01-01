@@ -1,11 +1,12 @@
 import './App.css';
-import FilterControls from './components/FilterControls';
 import Keyboard from './components/Keyboard';
+import MainPanel from './components/MainPanel';
+import uiSections from './components/MainPanel/uiSectionsConfig';
+import UISection from './components/UISection';
 import WaveformControls from './components/WaveFormControls';
 import KeyboardEventHandler from './hooks/KeyboardEventHandler';
 import MidiStatusHandler from './hooks/MidiStatusHandler';
 import useMidiAccess from './hooks/useMidiAccess';
-import MainPanel from './components/MainPanel';
 
 function App() {
   useMidiAccess();
@@ -15,10 +16,12 @@ function App() {
   return (
     <div className="App">
       <MainPanel>
-        <FilterControls />
+        {uiSections.map(group =>
+          <UISection key={group.name} {...group} />
+        )}
+      </MainPanel>
         <WaveformControls />
         <Keyboard />
-      </MainPanel>
     </div>
   )
 }
