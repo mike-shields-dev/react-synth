@@ -1,7 +1,7 @@
 import ComboBox from '../ComboBox';
 import Slider from '../Slider';
 
-function ParameterGroup(props) {
+function UISection(props) {
     return (<div className="parameter-group">
         <h3>{props.name}</h3>
         {props.parameters.map(parameter => {
@@ -28,4 +28,4 @@ function ParameterGroup(props) {
     </div>)
 }
 
-export default ParameterGroup;
+export default UISection;
