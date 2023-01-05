@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react"
-import { usePublish } from "./PubSub";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
+import { usePublish } from "./PubSub";
 
-const messageId = uuidv4();
+const uid = uuidv4();
 
 const useMIDI = () => { 
   const [isRequesting, setIsRequesting] = useState(true);
