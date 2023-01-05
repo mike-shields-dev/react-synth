@@ -2,6 +2,19 @@ import controlValueToFrequency from '../../utils/controlValueToFrequency';
 import controlValueToResonance from '../../utils/controlValueToResonance';
 
 const uiSectionsConfig = [
+    {
+        groupName: "Oscillator", 
+        parameters: [
+            {
+                uiType: "ComboBox", 
+                paramName: "Type",
+                statusByte: 176,
+                controlNumber: 21,
+                options: ["sine", "sawtooth", "square", "triangle"],
+                scale: null,
+            }
+        ],
+    },
     { 
         groupName: "Filter", 
         parameters: [
