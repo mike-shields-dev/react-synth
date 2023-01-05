@@ -63,14 +63,34 @@ const uiSectionsConfig = [
         ]
     },
     {
-        groupName: "Oscillator", 
+        groupName: "Amp", 
         parameters: [
             {
-                uiType: "ComboBox", 
-                paramName: "Type",
+                uiType: "Slider",
+                paramName: "Attack",
                 statusByte: 176,
-                controlNumber: 21,
-                options: ["sine", "sawtooth", "square", "triangle"],
+                controlNumber: 73,
+                scale: null,
+            }, 
+            {
+                uiType: "Slider",
+                paramName: "Decay",
+                statusByte: 176,
+                controlNumber: 76,
+                scale: null,
+            },
+            {
+                uiType: "Slider",
+                paramName: "Sustain",
+                statusByte: 176,
+                controlNumber: 77,
+                scale: null,
+            }, 
+            {
+                uiType: "Slider",
+                paramName: "Release",
+                statusByte: 176,
+                controlNumber: 72,
                 scale: null,
             }
         ],
