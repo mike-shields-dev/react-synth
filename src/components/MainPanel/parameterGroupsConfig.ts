@@ -1,4 +1,10 @@
 import { toFilterFreq, toFilterQ } from '../../utils/filterScalers';
+import {
+    toEnvelopeAttack,
+    toEnvelopeDecay,
+    toEnvelopeSustain,
+    toEnvelopeRelease
+} from '../../utils/envelopeScalers';
 
 const uiSectionsConfig = [
     {
@@ -36,28 +42,28 @@ const uiSectionsConfig = [
                 paramName: 'Attack',
                 statusByte: 176,
                 controlNumber: 14,
-                scale: null,
+                scale: toEnvelopeAttack,
             },
             {
                 uiType: "Slider",
                 paramName: 'Decay',
                 statusByte: 176,
                 controlNumber: 15,
-                scale: null,
+                scale: toEnvelopeDecay,
             },
             {
                 uiType: "Slider",
                 paramName: 'Sustain',
                 statusByte: 176,
                 controlNumber: 16,
-                scale: null,
+                scale: toEnvelopeSustain,
             },
             {
                 uiType: "Slider",
                 paramName: 'Release',
                 statusByte: 176,
                 controlNumber: 16,
-                scale: null,
+                scale: toEnvelopeRelease,
             },
         ]
     },
@@ -69,28 +75,28 @@ const uiSectionsConfig = [
                 paramName: "Attack",
                 statusByte: 176,
                 controlNumber: 73,
-                scale: null,
+                scale: toEnvelopeAttack,
             }, 
             {
                 uiType: "Slider",
                 paramName: "Decay",
                 statusByte: 176,
                 controlNumber: 76,
-                scale: null,
+                scale: toEnvelopeDecay,
             },
             {
                 uiType: "Slider",
                 paramName: "Sustain",
                 statusByte: 176,
                 controlNumber: 77,
-                scale: null,
+                scale: toEnvelopeSustain,
             }, 
             {
                 uiType: "Slider",
                 paramName: "Release",
                 statusByte: 176,
                 controlNumber: 72,
-                scale: null,
+                scale: toEnvelopeRelease,
             }
         ],
     }
