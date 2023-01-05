@@ -1,5 +1,4 @@
-import controlValueToFrequency from '../../utils/controlValueToFrequency';
-import controlValueToResonance from '../../utils/controlValueToResonance';
+import { toFilterFreq, toFilterQ } from '../../utils/filterScalers';
 
 const uiSectionsConfig = [
     {
@@ -23,14 +22,14 @@ const uiSectionsConfig = [
                 paramName: 'Cutoff',
                 statusByte: 176,
                 controlNumber: 74,
-                scale: controlValueToFrequency,
+                scale: toFilterFreq,
             },
             {
                 uiType: "Slider",
                 paramName: 'Resonance',
                 statusByte: 176,
                 controlNumber: 71,
-                scale: controlValueToResonance
+                scale: toFilterQ,
             },
             {
                 uiType: "Slider",

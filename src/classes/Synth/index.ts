@@ -1,10 +1,8 @@
 import { Gain } from 'tone';
 import { OmniOscillatorType } from 'tone/build/esm/source/oscillator/OscillatorInterface';
-import midiControlValueToFrequency from '../../utils/controlValueToFrequency';
-import midiControlValueToResonance from '../../utils/controlValueToResonance';
-import Oscillator from '../Oscillator';
+import { toFilterFreq, toFilterQ }  from '../../utils/filterScalers';
 import mapRange from '../../utils/mapRange';
-
+import Oscillator from '../Oscillator';
 class Synth {
     #filterCutoff = 200;
     #filterResonance = 0;
@@ -85,14 +83,14 @@ class Synth {
     }
 
     onResonance(controlValue: number) {
-        this.#filterResonance = midiControlValueToResonance({ value: controlValue });
+        this.#filterResonance = toFilterQ(controlValue);
         this.#oscillators.forEach(osc =>
             osc.set({ filter: { Q: this.#filterResonance } })
         );
     }
 
     onCutoff(controlValue: number) {
-        this.#filterCutoff = midiControlValueToFrequency({ value: controlValue });
+        this.#filterCutoff = toFilterFreq(controlValue);
         this.#oscillators.forEach(osc => 
             !osc.isSilent &&
             osc.set({ filterEnvelope: { baseFrequency: this.#filterCutoff } })

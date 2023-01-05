@@ -7,7 +7,7 @@ interface SliderProps {
     paramName: string;
     statusByte: number;
     controlNumber: number;
-    scale: ({ value, precision }: readoutArgs) => number;
+    scale: (value: number) => number;
 }
 
 interface readoutArgs {
@@ -30,7 +30,7 @@ function Slider(props: SliderProps) {
         if (+statusByte !== props.statusByte || +controlNumber !== props.controlNumber) return;
         
         setSliderValue(+controlValue);
-        setReadout(props.scale({ value: +controlValue, precision: 1}));
+        setReadout(props.scale(+controlValue));
     }
 
     function onChange(e: React.ChangeEvent<HTMLInputElement | undefined>) {
@@ -41,7 +41,7 @@ function Slider(props: SliderProps) {
         const [statusByte, dataByte1, dataByte2]
             = [props.statusByte, props.controlNumber, +controlValue];
         
-        setReadout(props.scale({value: +controlValue, precision: 1}));
+        setReadout(Math.round(props.scale(+controlValue) * 10) / 10);
         
         usePublish('midiMessage', {
             uid,
