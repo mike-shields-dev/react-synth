@@ -8,7 +8,7 @@ interface MidiMessage {
     data: [number, number, number];
 }
 
-const messageId = uuidv4();
+const uid = uuidv4();
 
 const keyboardWidth = 100;
 const numMajorKeys = 7;
@@ -45,7 +45,7 @@ function Keyboard() {
     useSubscribe('midiMessage', onMidiMessage);
     
     function onMidiMessage(_topic: PubSubJS.Message, payload: MidiMessage) {
-        if (payload.messageId === messageId) return;
+        if (payload.uid === uid) return;
         
         // get the currently active note 
         // and use it to display which key is active
@@ -64,12 +64,12 @@ function Keyboard() {
         if (e.type === 'mouseup' || e.type === 'mouseleave') statusByte = 128;
  
         if (statusByte === 144) usePublish('midiMessage', {
-            messageId,
+            uid,
             data: [statusByte, noteNumber, 80]
         });
         
         if (statusByte === 128) usePublish('midiMessage', {
-            messageId,
+            uid,
             data: [statusByte, noteNumber, 0]
         });
     };

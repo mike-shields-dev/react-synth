@@ -3,11 +3,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { usePublish, useSubscribe } from '../../hooks/PubSub';
 
 interface MidiMessage {
-    messageId: string;
+    uid: string;
     data: [number, number, number];
 }
 
-interface Props { 
+interface SliderProps {
+    uiType: string;
     paramName: string;
     statusByte: number;
     controlNumber: number;
@@ -19,16 +20,16 @@ interface readoutArgs {
     precision: number;
 }
 
-const messageId = uuidv4();
+const uid = uuidv4();
 
-function Slider(props: Props) { 
+function Slider(props: SliderProps) { 
     const [sliderValue, setSliderValue] = useState(65);
     const [readout, setReadout] = useState(0);
 
     useSubscribe('midiMessage', onMidiMessage);
 
     function onMidiMessage(_topic: PubSubJS.Message, payload: MidiMessage) {
-        if (payload.messageId === messageId) return;
+        if (payload.uid === uid) return;
         
         const [statusByte, controlNumber, controlValue] = payload.data;
         if (+statusByte !== props.statusByte || +controlNumber !== props.controlNumber) return;
@@ -48,7 +49,7 @@ function Slider(props: Props) {
         setReadout(props.convert({value: +controlValue, precision: 1}));
         
         usePublish('midiMessage', {
-            messageId,
+            uid,
             data: [statusByte, dataByte1, dataByte2]
         });
     }

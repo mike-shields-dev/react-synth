@@ -4,7 +4,7 @@ import keyIndexFromChar from '../utils/keyIndexFromChar';
 import { usePublish } from './PubSub';
 import useKeyboardEventListeners from './useKeyboardEventListeners';
 
-const messageId = uuidv4();
+const uid = uuidv4();
 
 function useKeyboardEvents() {
     const [octave, setOctave] = useState(5);
@@ -43,7 +43,7 @@ function useKeyboardEvents() {
         const [statusByte, dataByte1, dataByte2] = [144, noteNumber, velocity];
         
         usePublish('midiMessage', {
-            messageId,
+            uid,
             data: [statusByte, dataByte1, dataByte2]
         });
     }
@@ -58,8 +58,8 @@ function useKeyboardEvents() {
         const [statusByte, dataByte1] = [128, noteNumber];
             
         usePublish('midiMessage', {
-            messageId,
-            data: [statusByte, dataByte1]
+            uid,
+            data: [statusByte, dataByte1, 0]
         });
     }
 }

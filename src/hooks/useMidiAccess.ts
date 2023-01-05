@@ -42,7 +42,7 @@ const useMIDI = () => {
   function emitMidiMessage(midiMessage: WebMidi.MIDIMessageEvent) {
     const [statusByte, dataByte1, dataByte2] = midiMessage.data;
     usePublish('midiMessage', {
-      messageId, 
+      uid, 
       data: [statusByte, dataByte1, dataByte2]
     })
   }

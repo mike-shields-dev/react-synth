@@ -11,19 +11,19 @@ interface Props {
 }
 
 interface MidiMessage {
-    messageId: string;
+    uid: string;
     data: [number, number, number];
 }
 
-const messageId = uuidv4();
+const uid = uuidv4();
 
-function ComboBox(props: Props) {
+function ComboBox(props: ComboBoxProps) {
     const [value, setValue] = useState(0);
 
     useSubscribe('midiMessage', onMidiMessage);
 
     function onMidiMessage(_topic: PubSubJS.Message, payload: MidiMessage) {
-        if (payload.messageId === messageId) return;
+        if (payload.uid === uid) return;
 
         const [statusByte, dataByte1, dataByte2] = payload.data;
         
@@ -53,7 +53,7 @@ function ComboBox(props: Props) {
         });
 
         usePublish('midiMessage', {
-            messageId,
+            uid,
             data: [props.statusByte, props.controlNumber, controlValue]
         });
     }
