@@ -10,42 +10,42 @@ const uiSectionsConfig = [
                 paramName: 'Cutoff',
                 statusByte: 176,
                 controlNumber: 74,
-                convert: controlValueToFrequency,
+                scale: controlValueToFrequency,
             },
             {
                 uiType: "Slider",
                 paramName: 'Resonance',
                 statusByte: 176,
                 controlNumber: 71,
-                convert: controlValueToResonance
+                scale: controlValueToResonance
             },
             {
                 uiType: "Slider",
                 paramName: 'Attack',
                 statusByte: 176,
                 controlNumber: 14,
-                convert: null,
+                scale: null,
             },
             {
                 uiType: "Slider",
                 paramName: 'Decay',
                 statusByte: 176,
                 controlNumber: 15,
-                convert: null,
+                scale: null,
             },
             {
                 uiType: "Slider",
                 paramName: 'Sustain',
                 statusByte: 176,
                 controlNumber: 16,
-                convert: null,
+                scale: null,
             },
             {
                 uiType: "Slider",
                 paramName: 'Release',
                 statusByte: 176,
                 controlNumber: 16,
-                convert: null,
+                scale: null,
             },
         ]
     },
@@ -58,7 +58,7 @@ const uiSectionsConfig = [
                 statusByte: 176,
                 controlNumber: 21,
                 options: ["sine", "sawtooth", "square", "triangle"],
-                convert: null,
+                scale: null,
             }
         ],
     }

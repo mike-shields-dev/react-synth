@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { usePublish, useSubscribe, MidiMessage } from '../../hooks/PubSub';
+import { MidiMessage, usePublish, useSubscribe } from '../../hooks/PubSub';
 import mapRange from '../../utils/mapRange';
 
 interface ComboBoxProps {
@@ -9,7 +9,7 @@ interface ComboBoxProps {
     statusByte: number;
     controlNumber: number;
     options: string[];
-    convert: any;
+    scale: any;
 }
 
 const uid = uuidv4();

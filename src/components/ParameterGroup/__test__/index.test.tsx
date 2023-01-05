@@ -10,7 +10,7 @@ const sliderProps = {
             paramName: 'Cutoff',
             statusByte: 176,
             controlNumber: 74,
-            convert: null,
+            scale: null,
             options: [],
         },
     ]
@@ -24,7 +24,7 @@ const comboBoxProps = {
             paramName: 'Type',
             statusByte: 176,
             controlNumber: 21,
-            convert: null,
+            scale: null,
             options: [],
         },
     ]

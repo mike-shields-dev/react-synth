@@ -1,5 +1,5 @@
+import { ComboBox, ComboBoxProps } from '../ComboBox';
 import { Slider, SliderProps } from '../Slider';
-import { ComboBox, ComboBoxProps} from '../ComboBox';
 
 interface Props {
     groupName: string;
@@ -14,7 +14,7 @@ function ParameterGroup(props: Props) {
                 <Slider
                     key={`${props.groupName}${parameter.paramName}`}
                     controlNumber={parameter.controlNumber}
-                    convert={parameter.convert}
+                    scale={parameter.scale}
                     paramName={parameter.paramName}
                     statusByte={parameter.statusByte}
                     uiType={parameter.uiType}
@@ -24,7 +24,7 @@ function ParameterGroup(props: Props) {
                 <ComboBox
                     key={`${props.groupName}${parameter.paramName}`}
                     controlNumber={parameter.controlNumber}
-                    convert={parameter.convert}
+                    scale={parameter.scale}
                     options={parameter?.options}
                     paramName={parameter.paramName}
                     statusByte={parameter.statusByte}

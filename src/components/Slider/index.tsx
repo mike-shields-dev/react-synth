@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import { usePublish, useSubscribe, MidiMessage } from '../../hooks/PubSub';
+import { MidiMessage, usePublish, useSubscribe } from '../../hooks/PubSub';
 
 interface SliderProps {
     uiType: string;
     paramName: string;
     statusByte: number;
     controlNumber: number;
-    convert: ({ value, precision }: readoutArgs) => number;
+    scale: ({ value, precision }: readoutArgs) => number;
 }
 
 interface readoutArgs {
@@ -30,7 +30,7 @@ function Slider(props: SliderProps) {
         if (+statusByte !== props.statusByte || +controlNumber !== props.controlNumber) return;
         
         setSliderValue(+controlValue);
-        setReadout(props.convert({ value: +controlValue, precision: 1}));
+        setReadout(props.scale({ value: +controlValue, precision: 1}));
     }
 
     function onChange(e: React.ChangeEvent<HTMLInputElement | undefined>) {
@@ -41,7 +41,7 @@ function Slider(props: SliderProps) {
         const [statusByte, dataByte1, dataByte2]
             = [props.statusByte, props.controlNumber, +controlValue];
         
-        setReadout(props.convert({value: +controlValue, precision: 1}));
+        setReadout(props.scale({value: +controlValue, precision: 1}));
         
         usePublish('midiMessage', {
             uid,
@@ -68,3 +68,4 @@ function Slider(props: SliderProps) {
 
 export { Slider };
 export type { SliderProps };
+
