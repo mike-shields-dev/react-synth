@@ -4,7 +4,6 @@ import { describe, expect, test, vi } from 'vitest';
 import Keyboard from '.';
 
 const midiMessageMock = vi.fn((topic: string, payload: any) => {
-    console.log(payload)
     return { topic, payload };
 });
 
@@ -17,6 +16,7 @@ describe('Keyboard', () => {
     });
     afterEach(() => {
         PubSub.unsubscribe(subscription)
+        vi.restoreAllMocks();
     });
 
     afterAll(() => vi.clearAllMocks())
@@ -27,7 +27,7 @@ describe('Keyboard', () => {
             expect(keys.length).toEqual(12);
         });
     
-        test('mouseDown events on each key publish to the "midiMessage" topic with the correct payload to the document', () => {
+        test('mouseDown events on each key publish to the "midiMessage" topic with the correct payload to the document', async () => {
             const keys: HTMLButtonElement[] = screen.getAllByRole('button');
 
             
@@ -37,50 +37,40 @@ describe('Keyboard', () => {
                 const noteNumber = +key.value + (octave * 12);
                 const velocity = 80;
 
-                act(async () => {
-                    await fireEvent.mouseDown(key)
-                    console.log(i)
-                });
-                await waitFor(() => expect(midiMessageMock).toHaveBeenCalledTimes(1000000));
+                await act(() => fireEvent.mouseDown(key));
             });
+
+           await waitFor(() => expect(midiMessageMock).toHaveBeenCalledTimes(24));
         });
 
-        // test('mouseUp events on each key dispatch a CustomEvent with the name "midiMessage" and the correct payload to the document', () => {
-        //     const keys: HTMLButtonElement[] = screen.getAllByRole('button');
+        test('mouseUp events on each key dispatch a CustomEvent with the name "midiMessage" and the correct payload to the document', async () => {
+            const keys: HTMLButtonElement[] = screen.getAllByRole('button');
             
-        //     keys.forEach((key, i) => {
-        //         const octave = 5;
-        //         const statusByte = 128;
-        //         const noteNumber = +key.value + (octave * 12);
-        //         const velocity = 0;
+            keys.forEach((key, i) => {
+                const octave = 5;
+                const statusByte = 128;
+                const noteNumber = +key.value + (octave * 12);
+                const velocity = 0;
 
-        //         fireEvent.mouseUp(key);
-    
-        //         // expect(midiMessageMock).toHaveBeenCalledTimes(i + 1);
-        //         // expect(midiMessageMock).toHaveReturnedWith({
-        //         //     type: 'midiMessage',
-        //         //     data: [statusByte, noteNumber, velocity]
-        //         // });
-        //     });
-        // });
+                fireEvent.mouseUp(key);
+            });
 
-        // test('mouseLeave events on each key dispatch a CustomEvent with the name "midiMessage" and the correct payload to the document', () => {
-        //     const keys: HTMLButtonElement[] = screen.getAllByRole('button');
+            await waitFor(() => expect(midiMessageMock).toHaveBeenCalledTimes(24));
+        });
+
+        test('mouseLeave events on each key dispatch a CustomEvent with the name "midiMessage" and the correct payload to the document', async () => {
+            const keys: HTMLButtonElement[] = screen.getAllByRole('button');
             
-        //     keys.forEach((key, i) => {
-        //         const octave = 5;
-        //         const statusByte = 128;
-        //         const noteNumber = +key.value + (octave * 12);
-        //         const velocity = 0;
+            keys.forEach((key, i) => {
+                const octave = 5;
+                const statusByte = 128;
+                const noteNumber = +key.value + (octave * 12);
+                const velocity = 0;
 
-        //         fireEvent.mouseLeave(key);
-    
-        //         expect(midiMessageMock).toHaveBeenCalledTimes(i + 1);
-        //         expect(midiMessageMock).toHaveReturnedWith({
-        //             type: 'midiMessage',
-        //             data: [statusByte, noteNumber, velocity]
-        //         });
-        //     });
-        // });
+                fireEvent.mouseLeave(key);
+            });
+
+            await waitFor(() => expect(midiMessageMock).toHaveBeenCalledTimes(24));
+        });
     });
 });
