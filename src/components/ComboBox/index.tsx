@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { usePublish, useSubscribe } from '../../hooks/PubSub';
+import { usePublish, useSubscribe, MidiMessage } from '../../hooks/PubSub';
 import mapRange from '../../utils/mapRange';
 
-interface Props { 
+interface ComboBoxProps {
+    uiType: string;
     paramName: string;
     statusByte: number;
     controlNumber: number;
     options: string[];
-}
-
-interface MidiMessage {
-    uid: string;
-    data: [number, number, number];
+    convert: any;
 }
 
 const uid = uuidv4();

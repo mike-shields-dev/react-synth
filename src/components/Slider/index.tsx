@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import { usePublish, useSubscribe } from '../../hooks/PubSub';
-
-interface MidiMessage {
-    uid: string;
-    data: [number, number, number];
-}
+import { usePublish, useSubscribe, MidiMessage } from '../../hooks/PubSub';
 
 interface SliderProps {
     uiType: string;

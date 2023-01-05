@@ -1,12 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { usePublish, useSubscribe } from '../../hooks/PubSub';
+import { usePublish, useSubscribe, MidiMessage } from '../../hooks/PubSub';
 import css from './style.module.css';
-
-interface MidiMessage {
-    messageId: string;
-    data: [number, number, number];
-}
 
 const uid = uuidv4();
 

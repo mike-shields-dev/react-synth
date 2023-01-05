@@ -21,3 +21,4 @@ function useSubscribe(topic: string, subscriptionHandler: PubSubJS.SubscriptionL
 }
 
 export { useSubscribe, usePublish };
+export type { MidiMessage };
