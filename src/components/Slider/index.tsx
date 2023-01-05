@@ -66,4 +66,5 @@ function Slider(props: SliderProps) {
     )
 }
 
-export default Slider;
+export { Slider };
+export type { SliderProps };

@@ -73,4 +73,5 @@ function ComboBox(props: ComboBoxProps) {
     )
 }
 
-export default ComboBox;
+export { ComboBox };
+export type { ComboBoxProps };

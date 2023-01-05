@@ -3,47 +3,65 @@ import controlValueToResonance from '../../utils/controlValueToResonance';
 
 const uiSectionsConfig = [
     { 
-        statusByte: 176,
-        name: "Filter", 
+        groupName: "Filter", 
         parameters: [
             {
                 uiType: "Slider", 
-                name: 'Cutoff',
+                paramName: 'Cutoff',
+                statusByte: 176,
                 controlNumber: 74,
                 convert: controlValueToFrequency,
             },
             {
                 uiType: "Slider",
-                name: 'Resonance',
+                paramName: 'Resonance',
+                statusByte: 176,
                 controlNumber: 71,
                 convert: controlValueToResonance
             },
             {
                 uiType: "Slider",
-                name: 'Attack',
+                paramName: 'Attack',
+                statusByte: 176,
                 controlNumber: 14,
-                convert: controlValueToResonance
+                convert: null,
             },
             {
                 uiType: "Slider",
-                name: 'Decay',
+                paramName: 'Decay',
+                statusByte: 176,
                 controlNumber: 15,
-                convert: controlValueToResonance
+                convert: null,
             },
             {
                 uiType: "Slider",
-                name: 'Sustain',
+                paramName: 'Sustain',
+                statusByte: 176,
                 controlNumber: 16,
-                convert: controlValueToResonance
+                convert: null,
             },
             {
                 uiType: "Slider",
-                name: 'Release',
+                paramName: 'Release',
+                statusByte: 176,
                 controlNumber: 16,
-                convert: controlValueToResonance
+                convert: null,
             },
         ]
     },
+    {
+        groupName: "Oscillator", 
+        parameters: [
+            {
+                uiType: "ComboBox", 
+                paramName: "Type",
+                statusByte: 176,
+                controlNumber: 21,
+                options: ["sine", "sawtooth", "square", "triangle"],
+                convert: null,
+            }
+        ],
+    }
 ];
 
 export default uiSectionsConfig;
