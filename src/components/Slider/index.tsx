@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { MidiMessage, usePublish, useSubscribe } from '../../hooks/PubSub';
 
@@ -8,18 +8,16 @@ interface SliderProps {
     statusByte: number;
     controlNumber: number;
     scale: (value: number) => number;
-}
-
-interface readoutArgs {
-    value: number;
-    precision: number;
+    initValue: number;
 }
 
 const uid = uuidv4();
 
 function Slider(props: SliderProps) { 
-    const [sliderValue, setSliderValue] = useState(65);
+    const [sliderValue, setSliderValue] = useState(props.initValue);
     const [readout, setReadout] = useState(0);
+
+    useEffect(() => setReadout(Math.round(props.scale(+sliderValue) * 10) / 10), []);
 
     useSubscribe('midiMessage', onMidiMessage);
 

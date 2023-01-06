@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { MidiMessage, usePublish, useSubscribe } from '../../hooks/PubSub';
 import mapRange from '../../utils/mapRange';
@@ -10,12 +10,13 @@ interface ComboBoxProps {
     controlNumber: number;
     options: string[];
     scale: any;
+    initValue: number;
 }
 
 const uid = uuidv4();
 
 function ComboBox(props: ComboBoxProps) {
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useState(props.initValue);
 
     useSubscribe('midiMessage', onMidiMessage);
 

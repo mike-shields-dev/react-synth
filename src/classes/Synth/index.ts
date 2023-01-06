@@ -1,4 +1,5 @@
 import synthConfig from '../../config/synthConfig';
+import oscillatorConfig from '../../config/oscillatorConfig';
 import { Gain } from 'tone';
 import { OmniOscillatorType } from 'tone/build/esm/source/oscillator/OscillatorInterface';
 import { toFilterFreq, toFilterQ }  from '../../utils/filterScalers';
@@ -15,7 +16,7 @@ import {
 class Synth {
     #config: any = synthConfig;
     
-    #oscTypes: OmniOscillatorType[] = ['sine', 'sawtooth', 'square', 'triangle'];
+    #oscTypes: OmniOscillatorType[] = oscillatorConfig.oscillator.types;
     #gain = new Gain({ gain: 0.05 });
     #oscillators = [...Array(128).fill(null).map((_, noteNumber) => 
         new Oscillator(noteNumber, this.#config)

@@ -1,13 +1,12 @@
-import { toFilterFreq, toFilterQ } from '../../utils/filterScalers';
+import synthConfig from './synthConfig';
+import oscillatorConfig from './oscillatorConfig';
 import {
-    toEnvelopeAttack,
-    toEnvelopeDecay,
-    toEnvelopeSustain,
-    toEnvelopeRelease,
-    toEnvelopeAmount
-} from '../../utils/envelopeScalers';
+    toEnvelopeAmount, toEnvelopeAttack,
+    toEnvelopeDecay, toEnvelopeRelease, toEnvelopeSustain
+} from '../utils/envelopeScalers';
+import { toFilterFreq, toFilterQ } from '../utils/filterScalers';
 
-const uiSectionsConfig = [
+const parameterGroupsConfig = [
     {
         groupName: "Oscillator", 
         parameters: [
@@ -16,8 +15,9 @@ const uiSectionsConfig = [
                 paramName: "Type",
                 statusByte: 176,
                 controlNumber: 21,
-                options: ["sine", "sawtooth", "square", "triangle"],
+                options: oscillatorConfig.oscillator.types,
                 scale: null,
+                initValue: oscillatorConfig.oscillator.types.indexOf(synthConfig.oscillator.type),
             }
         ],
     },
@@ -30,6 +30,7 @@ const uiSectionsConfig = [
                 statusByte: 176,
                 controlNumber: 74,
                 scale: toFilterFreq,
+                initValue: toFilterFreq.invert(synthConfig.filterEnvelope.baseFrequency),
             },
             {
                 uiType: "Slider",
@@ -37,6 +38,7 @@ const uiSectionsConfig = [
                 statusByte: 176,
                 controlNumber: 71,
                 scale: toFilterQ,
+                initValue: toFilterQ.invert(synthConfig.filter.Q),
             },
             {
                 uiType: "Slider",
@@ -44,6 +46,7 @@ const uiSectionsConfig = [
                 statusByte: 176,
                 controlNumber: 18,
                 scale: toEnvelopeAmount,
+                initValue: toEnvelopeAmount.invert(synthConfig.filterEnvelope.octaves),
             },
             {
                 uiType: "Slider",
@@ -51,6 +54,7 @@ const uiSectionsConfig = [
                 statusByte: 176,
                 controlNumber: 14,
                 scale: toEnvelopeAttack,
+                initValue: toEnvelopeAttack.invert(synthConfig.filterEnvelope.attack),
             },
             {
                 uiType: "Slider",
@@ -58,6 +62,7 @@ const uiSectionsConfig = [
                 statusByte: 176,
                 controlNumber: 15,
                 scale: toEnvelopeDecay,
+                initValue: toEnvelopeDecay.invert(synthConfig.filterEnvelope.decay),
             },
             {
                 uiType: "Slider",
@@ -65,6 +70,7 @@ const uiSectionsConfig = [
                 statusByte: 176,
                 controlNumber: 16,
                 scale: toEnvelopeSustain,
+                initValue: synthConfig.filterEnvelope.sustain,
             },
             {
                 uiType: "Slider",
@@ -72,6 +78,7 @@ const uiSectionsConfig = [
                 statusByte: 176,
                 controlNumber: 17,
                 scale: toEnvelopeRelease,
+                initValue: toEnvelopeRelease.invert(synthConfig.filterEnvelope.sustain),
             },
         ]
     },
@@ -84,6 +91,7 @@ const uiSectionsConfig = [
                 statusByte: 176,
                 controlNumber: 73,
                 scale: toEnvelopeAttack,
+                initValue: toEnvelopeAttack.invert(synthConfig.envelope.attack),
             }, 
             {
                 uiType: "Slider",
@@ -91,6 +99,7 @@ const uiSectionsConfig = [
                 statusByte: 176,
                 controlNumber: 76,
                 scale: toEnvelopeDecay,
+                initValue: toEnvelopeDecay.invert(synthConfig.envelope.decay),
             },
             {
                 uiType: "Slider",
@@ -98,6 +107,7 @@ const uiSectionsConfig = [
                 statusByte: 176,
                 controlNumber: 77,
                 scale: toEnvelopeSustain,
+                initValue: toEnvelopeSustain.invert(synthConfig.envelope.sustain),
             }, 
             {
                 uiType: "Slider",
@@ -105,9 +115,10 @@ const uiSectionsConfig = [
                 statusByte: 176,
                 controlNumber: 72,
                 scale: toEnvelopeRelease,
+                initValue: toEnvelopeRelease.invert(synthConfig.envelope.release),
             }
         ],
     }
 ];
 
-export default uiSectionsConfig;
+export default parameterGroupsConfig;

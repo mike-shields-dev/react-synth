@@ -1,8 +1,8 @@
 import './App.css';
 import Keyboard from './components/Keyboard';
 import MainPanel from './components/MainPanel';
-import parameterGroupsConfig from './components/MainPanel/parameterGroupsConfig';
 import ParameterGroup from './components/ParameterGroup';
+import parameterGroupsConfig from './config/parameterGroupsConfig';
 import KeyboardEventHandler from './hooks/KeyboardEventHandler';
 import MidiStatusHandler from './hooks/MidiStatusHandler';
 import useMidiAccess from './hooks/useMidiAccess';

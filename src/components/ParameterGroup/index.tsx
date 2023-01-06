@@ -18,6 +18,7 @@ function ParameterGroup(props: Props) {
                     paramName={parameter.paramName}
                     statusByte={parameter.statusByte}
                     uiType={parameter.uiType}
+                    initValue={parameter.initValue}
                 />
             )
             if (parameter.uiType === "ComboBox") return (
@@ -29,6 +30,7 @@ function ParameterGroup(props: Props) {
                     paramName={parameter.paramName}
                     statusByte={parameter.statusByte}
                     uiType={parameter.uiType}
+                    initValue={parameter.initValue}
                 />
             )
         }
