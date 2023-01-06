@@ -27,7 +27,8 @@ const keys = [
 function Keyboard() {
     const keyboardRef = useRef<HTMLDivElement>(null);
     const [octave, setOctave] = useState(5);
-    
+    const [activeNotes, setActiveNotes] = useState(Array(128).fill({ isActive: false }));
+
     useEffect(() => {        
         if (!keyboardRef.current) return;
 
@@ -41,10 +42,22 @@ function Keyboard() {
     
     function onMidiMessage(_topic: PubSubJS.Message, payload: MidiMessage) {
         if (payload.uid === uid) return;
+
+        const [statusByte, dataByte1] = payload.data;
+        if (![128, 144].includes(+statusByte)) return;
+
+        const noteNumber = +dataByte1;
+        let isActive: boolean = false;
+
+        if (+statusByte === 144) isActive = true;
+        if (+statusByte === 128) isActive = false;
         
-        // get the currently active note 
-        // and use it to display which key is active
-        // console.log(e.detail.data);
+        setActiveNotes(activeNotes => {
+            const newActiveNotes = [...activeNotes];
+            newActiveNotes[noteNumber] = { isActive };
+
+            return newActiveNotes;
+        })
     }
 
     function onNote(e: React.MouseEvent) {        
@@ -76,7 +89,10 @@ function Keyboard() {
                     <button
                         name="key"
                         key={`key${key.name}`}
-                        className={`${css[key.className]}`}
+                        className={`${activeNotes[+key.value + octave * 12].isActive
+                            ? css[`${key.className}--active`]
+                            : css[key.className]
+                        }`}
                         value={key.value}
                         onMouseDown={onNote}
                         onMouseLeave={onNote}
