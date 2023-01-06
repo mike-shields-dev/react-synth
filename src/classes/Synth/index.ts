@@ -1,3 +1,4 @@
+import synthConfig from '../../config/synthConfig';
 import { Gain } from 'tone';
 import { OmniOscillatorType } from 'tone/build/esm/source/oscillator/OscillatorInterface';
 import { toFilterFreq, toFilterQ }  from '../../utils/filterScalers';
@@ -12,53 +13,12 @@ import {
 } from '../../utils/envelopeScalers';
     
 class Synth {
-    #oscillatorConfig: any = {
-        oscillator: {
-            type: "sawtooth",
-            volume: 1,
-            phase: 0,
-            mute: false,
-            onstop: () => null,
-        },
-        filter: {
-            type: 'lowpass',
-            detune: 0,
-            frequency: 0,
-            gain: 1,
-            Q: 0,
-            rolloff: -12,
-        }, 
-        envelope: {
-            attack: 0.0001,
-            attackCurve: "linear",
-            decay: 0.5,
-            decayCurve: "linear",
-            sustain: 1,
-            release: 0.25,
-            releaseCurve: "linear",
-        },
-        detune: 0,
-        filterEnvelope: {
-            attack: 0.5,
-            attackCurve: "linear",
-            baseFrequency: 2000,
-            decay: 0.5,
-            decayCurve: 'linear',
-            exponent: 1,
-            octaves: 0,
-            sustain: 1,
-            release: 1,
-            releaseCurve: 'linear',
-        },
-        onsilence: () => null,
-        portamento: 0,
-        volume: 0,
-    };
+    #config: any = synthConfig;
     
     #oscTypes: OmniOscillatorType[] = ['sine', 'sawtooth', 'square', 'triangle'];
     #gain = new Gain({ gain: 0.05 });
     #oscillators = [...Array(128).fill(null).map((_, noteNumber) => 
-        new Oscillator(noteNumber, this.#oscillatorConfig)
+        new Oscillator(noteNumber, this.#config)
     )];
 
     get oscTypes() {
@@ -73,7 +33,7 @@ class Synth {
     onNoteOn([noteNumber, velocity = 0]: number[]) {
         const osc = this.#oscillators[noteNumber];
         if (osc.isActive) return;
-        osc.set(this.#oscillatorConfig);
+        osc.set(this.#config);
         osc.noteOn();
     }
 
@@ -85,17 +45,39 @@ class Synth {
 
     onControlChange([controlNumber, controlValue]: number[]) {
         if (controlNumber === 21) return this.onOscType(controlValue);
-        if (controlNumber === 71) return this.update(["filter", "Q"], controlValue, toFilterQ);
-        if (controlNumber === 74) return this.update(["filterEnvelope", "baseFrequency"], controlValue, toFilterFreq);
-        if (controlNumber === 18) return this.update(["filterEnvelope", "octaves"], controlValue, toEnvelopeAmount);
-        if (controlNumber === 14) return this.update(["filterEnvelope", "attack"], controlValue, toEnvelopeAttack);
-        if (controlNumber === 15) return this.update(["filterEnvelope", "decay"], controlValue, toEnvelopeDecay);
-        if (controlNumber === 16) return this.update(["filterEnvelope", "sustain"], controlValue, toEnvelopeSustain);
-        if (controlNumber === 17) return this.update(["filterEnvelope", "release"], controlValue, toEnvelopeRelease);
-        if (controlNumber === 73) return this.update(["envelope", "attack"], controlValue, toEnvelopeAttack);
-        if (controlNumber === 74) return this.update(["envelope", "decay"], controlValue, toEnvelopeDecay);
-        if (controlNumber === 77) return this.update(["envelope", "sustain"], controlValue, toEnvelopeSustain);
-        if (controlNumber === 72) return this.update(["envelope", "release"], controlValue, toEnvelopeRelease);
+        if (controlNumber === 71) return this.update(
+            ["filter", "Q"], controlValue, toFilterQ
+        );
+        if (controlNumber === 74) return this.update(
+            ["filterEnvelope", "baseFrequency"], controlValue, toFilterFreq
+        );
+        if (controlNumber === 18) return this.update(
+            ["filterEnvelope", "octaves"], controlValue, toEnvelopeAmount
+        );
+        if (controlNumber === 14) return this.update(
+            ["filterEnvelope", "attack"], controlValue, toEnvelopeAttack
+        );
+        if (controlNumber === 15) return this.update(
+            ["filterEnvelope", "decay"], controlValue, toEnvelopeDecay
+        );
+        if (controlNumber === 16) return this.update(
+            ["filterEnvelope", "sustain"], controlValue, toEnvelopeSustain
+        );
+        if (controlNumber === 17) return this.update(
+            ["filterEnvelope", "release"], controlValue, toEnvelopeRelease
+        );
+        if (controlNumber === 73) return this.update(
+            ["envelope", "attack"], controlValue, toEnvelopeAttack
+        );
+        if (controlNumber === 74) return this.update(
+            ["envelope", "decay"], controlValue, toEnvelopeDecay
+        );
+        if (controlNumber === 77) return this.update(
+            ["envelope", "sustain"], controlValue, toEnvelopeSustain
+        );
+        if (controlNumber === 72) return this.update(
+            ["envelope", "release"], controlValue, toEnvelopeRelease
+        );
     }
 
 
@@ -125,11 +107,11 @@ class Synth {
     }
 
     update(keys: string[], controlValue: number, toScale: (n: number) => number) {
-        let paramValue = this.getValue(this.#oscillatorConfig, keys);
+        let paramValue = this.getValue(this.#config, keys);
         
         const scaledValue = toScale(controlValue);
           
-        this.setValue(this.#oscillatorConfig, keys, scaledValue);
+        this.setValue(this.#config, keys, scaledValue);
 
         this.#oscillators.forEach(osc =>
             !osc.isSilent && osc.set({
@@ -147,10 +129,8 @@ class Synth {
                 outRangeMin: 0, outRangeMax: this.oscTypes.length - 1
             })
         )
-        this.setValue(this.#oscillatorConfig, ["oscillator", "type"], this.oscTypes[index])
-        this.#oscillators.forEach(osc =>
-            osc.oscillator.type = this.oscTypes[index]
-        );
+        this.setValue(this.#config, ["oscillator", "type"], this.oscTypes[index])
+        this.#oscillators.forEach(osc => osc.oscillator.type = this.oscTypes[index]);
     }
 }
 
