@@ -6,7 +6,7 @@ const toEnvelopeDecay = scaleLinear().domain([0, 127]).range([0, 2]);
 
 const toEnvelopeSustain = scaleLinear().domain([0, 127]).range([0, 1]);
 
-const toEnvelopeRelease = scaleLinear().domain([0, 127]).range([0, 5]);
+const toEnvelopeRelease = scaleLinear().domain([0, 127]).range([0.0001, 5]);
 
 const toEnvelopeAmount = scaleLinear().domain([0, 127]).range([0, 10]);
 
