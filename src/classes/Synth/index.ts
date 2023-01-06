@@ -1,7 +1,6 @@
 import synthConfig from '../../config/synthConfig';
 import oscillatorConfig from '../../config/oscillatorConfig';
 import { Gain } from 'tone';
-import { OmniOscillatorType } from 'tone/build/esm/source/oscillator/OscillatorInterface';
 import { toFilterFreq, toFilterQ }  from '../../utils/filterScalers';
 import mapRange from '../../utils/mapRange';
 import Oscillator from '../Oscillator';
@@ -49,36 +48,56 @@ class Synth {
         if (controlNumber === 71) return this.update(
             ["filter", "Q"], controlValue, toFilterQ
         );
-        if (controlNumber === 74) return this.update(
-            ["filterEnvelope", "baseFrequency"], controlValue, toFilterFreq
-        );
-        if (controlNumber === 18) return this.update(
-            ["filterEnvelope", "octaves"], controlValue, toEnvelopeAmount
-        );
-        if (controlNumber === 14) return this.update(
-            ["filterEnvelope", "attack"], controlValue, toEnvelopeAttack
-        );
-        if (controlNumber === 15) return this.update(
-            ["filterEnvelope", "decay"], controlValue, toEnvelopeDecay
-        );
-        if (controlNumber === 16) return this.update(
-            ["filterEnvelope", "sustain"], controlValue, toEnvelopeSustain
-        );
-        if (controlNumber === 17) return this.update(
-            ["filterEnvelope", "release"], controlValue, toEnvelopeRelease
-        );
-        if (controlNumber === 73) return this.update(
-            ["envelope", "attack"], controlValue, toEnvelopeAttack
-        );
-        if (controlNumber === 74) return this.update(
-            ["envelope", "decay"], controlValue, toEnvelopeDecay
-        );
-        if (controlNumber === 77) return this.update(
-            ["envelope", "sustain"], controlValue, toEnvelopeSustain
-        );
-        if (controlNumber === 72) return this.update(
-            ["envelope", "release"], controlValue, toEnvelopeRelease
-        );
+        if (controlNumber === 74) 
+            return this.update(
+                ["filterEnvelope", "baseFrequency"], 
+                controlValue, toFilterFreq
+            );
+        if (controlNumber === 18) 
+            return this.update(
+                ["filterEnvelope", "octaves"], 
+                controlValue, toEnvelopeAmount
+            );
+        if (controlNumber === 14) 
+            return this.update(
+                ["filterEnvelope", "attack"], 
+                controlValue, toEnvelopeAttack
+            );
+        if (controlNumber === 15) 
+            return this.update(
+                ["filterEnvelope", "decay"], 
+                controlValue, toEnvelopeDecay
+            );
+        if (controlNumber === 16) 
+            return this.update(
+                ["filterEnvelope", "sustain"], 
+                controlValue, toEnvelopeSustain
+            );
+        if (controlNumber === 17) 
+            return this.update(
+                ["filterEnvelope", "release"], 
+                controlValue, toEnvelopeRelease
+            );
+        if (controlNumber === 73) 
+            return this.update(
+                ["envelope", "attack"], 
+                controlValue, toEnvelopeAttack
+            );
+        if (controlNumber === 74) 
+            return this.update(
+                ["envelope", "decay"], 
+                controlValue, toEnvelopeDecay
+            );
+        if (controlNumber === 77) 
+            return this.update(
+                ["envelope", "sustain"], 
+                controlValue, toEnvelopeSustain
+            );
+        if (controlNumber === 72) 
+            return this.update(
+                ["envelope", "release"], 
+                controlValue, toEnvelopeRelease
+            );
     }
 
 
