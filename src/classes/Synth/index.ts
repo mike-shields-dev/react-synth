@@ -16,7 +16,7 @@ import {
 class Synth {
     #config: any = synthConfig;
     
-    #oscTypes: OmniOscillatorType[] = oscillatorConfig.oscillator.types;
+    #oscTypes: string[] = oscillatorConfig.oscillator.types;
     #gain = new Gain({ gain: 0.05 });
     #oscillators = [...Array(128).fill(null).map((_, noteNumber) => 
         new Oscillator(noteNumber, this.#config)
