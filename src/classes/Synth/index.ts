@@ -10,49 +10,6 @@ import {
     toEnvelopeRelease, 
     toEnvelopeAmount
 } from '../../utils/envelopeScalers';
-
-const oscillatorConfig = {
-    oscillator: {
-        type: "square",
-        volume: 1,
-        phase: 0,
-        mute: false,
-        onstop: () => null,
-    },
-    filter: {
-        type: 'lowpass',
-        detune: 0,
-        frequency: 0,
-        gain: 1,
-        Q: 0,
-        rolloff: -12,
-    }, 
-    envelope: {
-        attack: 0.5,
-        attackCurve: "linear",
-        decay: 1,
-        decayCurve: "linear",
-        sustain: 1,
-        release: 3,
-        releaseCurve: "linear",
-    },
-    detune: 0,
-    filterEnvelope: {
-        attack: 0.5,
-        attackCurve: "linear",
-        baseFrequency: 2000,
-        decay: 1,
-        decayCurve: 'linear',
-        exponent: 1,
-        octaves: 0,
-        release: 3,
-        releaseCurve: 'linear',
-        sustain: 1,
-    },
-    onsilence: () => null,
-    portamento: 0,
-    volume: 0,
-}
     
 class Synth {
     #oscillatorConfig: any = {
