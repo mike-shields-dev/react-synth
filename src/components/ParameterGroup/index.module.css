@@ -1,0 +1,4 @@
+.ParameterGroup__controls {
+    border: 1px solid blue;
+    display: flex;
+}

@@ -1,0 +1,46 @@
+.Slider {
+    --width: 5rem;
+    --font-size: 0.8rem;
+    height: 15rem;
+    width: var(--width);
+    display: grid;
+    grid-template-areas: 
+        "output"
+        "input"
+        "label";
+
+    grid-template-rows: 1fr 4fr 1fr;
+    text-align: center;
+    place-items: center;
+    font-size: 0.8rem;
+    font-family: monospace, sans-serif;
+}
+
+.Slider > output {
+    display: block;
+    width: var(--width);
+    grid-area: output;
+    display: block;
+    background: black;
+    max-width: 4rem;
+    color: lime;
+    border-radius: 0.25rem;
+}
+
+.Slider > input {
+    grid-area: input;
+    display: block;
+    transform: rotateZ(-90deg);
+    margin: calc(var(--width) * -1);
+    width: 10rem;
+}
+
+.Slider > label {
+    grid-area: label;
+    padding: 0;
+    place-content: center;
+    width: var(--width);
+    overflow: hidden;
+    word-wrap: nowrap;
+    line-break: none;
+}

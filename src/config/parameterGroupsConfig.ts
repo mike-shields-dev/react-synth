@@ -26,7 +26,7 @@ const parameterGroupsConfig = [
         parameters: [
             {
                 uiType: "Slider", 
-                paramName: 'Cutoff',
+                paramName: 'Hz',
                 statusByte: 176,
                 controlNumber: 74,
                 scale: toFilterFreq,
@@ -34,7 +34,7 @@ const parameterGroupsConfig = [
             },
             {
                 uiType: "Slider",
-                paramName: 'Resonance',
+                paramName: 'Q',
                 statusByte: 176,
                 controlNumber: 71,
                 scale: toFilterQ,
@@ -42,7 +42,7 @@ const parameterGroupsConfig = [
             },
             {
                 uiType: "Slider",
-                paramName: 'Env Amount',
+                paramName: 'Amount',
                 statusByte: 176,
                 controlNumber: 18,
                 scale: toEnvelopeAmount,
@@ -50,7 +50,7 @@ const parameterGroupsConfig = [
             },
             {
                 uiType: "Slider",
-                paramName: 'Attack',
+                paramName: 'A',
                 statusByte: 176,
                 controlNumber: 14,
                 scale: toEnvelopeAttack,
@@ -58,7 +58,7 @@ const parameterGroupsConfig = [
             },
             {
                 uiType: "Slider",
-                paramName: 'Decay',
+                paramName: 'D',
                 statusByte: 176,
                 controlNumber: 15,
                 scale: toEnvelopeDecay,
@@ -66,15 +66,15 @@ const parameterGroupsConfig = [
             },
             {
                 uiType: "Slider",
-                paramName: 'Sustain',
+                paramName: 'S',
                 statusByte: 176,
                 controlNumber: 16,
                 scale: toEnvelopeSustain,
-                initValue: synthConfig.filterEnvelope.sustain,
+                initValue: toEnvelopeSustain.invert(synthConfig.filterEnvelope.sustain),
             },
             {
                 uiType: "Slider",
-                paramName: 'Release',
+                paramName: 'R',
                 statusByte: 176,
                 controlNumber: 17,
                 scale: toEnvelopeRelease,
@@ -87,7 +87,7 @@ const parameterGroupsConfig = [
         parameters: [
             {
                 uiType: "Slider",
-                paramName: "Attack",
+                paramName: "A",
                 statusByte: 176,
                 controlNumber: 73,
                 scale: toEnvelopeAttack,
@@ -95,7 +95,7 @@ const parameterGroupsConfig = [
             }, 
             {
                 uiType: "Slider",
-                paramName: "Decay",
+                paramName: "D",
                 statusByte: 176,
                 controlNumber: 76,
                 scale: toEnvelopeDecay,
@@ -103,7 +103,7 @@ const parameterGroupsConfig = [
             },
             {
                 uiType: "Slider",
-                paramName: "Sustain",
+                paramName: "S",
                 statusByte: 176,
                 controlNumber: 77,
                 scale: toEnvelopeSustain,
@@ -111,7 +111,7 @@ const parameterGroupsConfig = [
             }, 
             {
                 uiType: "Slider",
-                paramName: "Release",
+                paramName: "R",
                 statusByte: 176,
                 controlNumber: 72,
                 scale: toEnvelopeRelease,

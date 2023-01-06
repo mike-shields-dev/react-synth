@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { MidiMessage, usePublish, useSubscribe } from '../../hooks/PubSub';
+import css from './index.module.css';
 
 interface SliderProps {
     uiType: string;
@@ -48,9 +49,10 @@ function Slider(props: SliderProps) {
     }
 
     return (
-        <>
-            <label htmlFor={props.paramName}>{props.paramName}</label>
+        <div className={css.Slider}>
+            <label className={css.Slider__label} htmlFor={props.paramName}>{props.paramName}</label>
             <input 
+                className={css.Slider__input}
                 id={props.paramName} 
                 max="127" 
                 min="0" 
@@ -59,8 +61,8 @@ function Slider(props: SliderProps) {
                 type='range' 
                 value={sliderValue}
             />
-            <output htmlFor={props.paramName} style={{ display: "inline-block", width: '5rem' }}>{readout}</output>
-        </>
+            <output className={css.Slider__output} htmlFor={props.paramName} style={{ display: "inline-block", width: '5rem' }}>{readout}</output>
+        </div>
     )
 }
 
