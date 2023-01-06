@@ -147,6 +147,7 @@ class Synth {
                 outRangeMin: 0, outRangeMax: this.oscTypes.length - 1
             })
         )
+        this.setValue(this.#oscillatorConfig, ["oscillator", "type"], this.oscTypes[index])
         this.#oscillators.forEach(osc =>
             osc.oscillator.type = this.oscTypes[index]
         );
