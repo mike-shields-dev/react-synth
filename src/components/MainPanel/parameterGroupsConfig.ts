@@ -3,7 +3,8 @@ import {
     toEnvelopeAttack,
     toEnvelopeDecay,
     toEnvelopeSustain,
-    toEnvelopeRelease
+    toEnvelopeRelease,
+    toEnvelopeAmount
 } from '../../utils/envelopeScalers';
 
 const uiSectionsConfig = [
@@ -39,6 +40,13 @@ const uiSectionsConfig = [
             },
             {
                 uiType: "Slider",
+                paramName: 'Env Amount',
+                statusByte: 176,
+                controlNumber: 18,
+                scale: toEnvelopeAmount,
+            },
+            {
+                uiType: "Slider",
                 paramName: 'Attack',
                 statusByte: 176,
                 controlNumber: 14,
@@ -62,7 +70,7 @@ const uiSectionsConfig = [
                 uiType: "Slider",
                 paramName: 'Release',
                 statusByte: 176,
-                controlNumber: 16,
+                controlNumber: 17,
                 scale: toEnvelopeRelease,
             },
         ]
