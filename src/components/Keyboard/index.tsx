@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { usePublish, useSubscribe, MidiMessage } from '../../hooks/PubSub';
-import css from './style.module.css';
+import css from './index.module.css';
 
 const uid = uuidv4();
 
