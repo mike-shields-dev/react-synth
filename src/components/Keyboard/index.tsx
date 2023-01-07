@@ -37,16 +37,8 @@ function Keyboard() {
         );
     }, []);
 
-    useSubscribe('midiMessage', onMidiMessage);
-    
-    function onMidiMessage(_topic: PubSubJS.Message, payload: MidiMessage) {
-        if (payload.uid === uid) return;
-
-        const [statusByte, dataByte1] = payload.data;
-        if (![128, 144].includes(+statusByte)) return;
-
-        const noteNumber = +dataByte1;
-        let isActive: boolean = false;
+    function updateActiveNotes(statusByte: number, noteNumber: number) {
+        let isActive = false;
 
         if (+statusByte === 144) isActive = true;
         if (+statusByte === 128) isActive = false;
@@ -59,6 +51,19 @@ function Keyboard() {
         })
     }
 
+    useSubscribe('midiMessage', onMidiMessage);
+    
+    function onMidiMessage(_topic: PubSubJS.Message, payload: MidiMessage) {
+        if (payload.uid === uid) return;
+
+        const [statusByte, dataByte1] = payload.data;
+        if (![128, 144].includes(+statusByte)) return;
+
+        const noteNumber = +dataByte1;
+
+        updateActiveNotes(statusByte, noteNumber);
+    }
+
     function onNote(e: React.MouseEvent) {        
         const { value } = (e.target as HTMLButtonElement);
         const noteNumber = +value + octave * 12;
@@ -66,40 +71,50 @@ function Keyboard() {
         if (noteNumber < 0 || noteNumber > 127) return;
 
         let statusByte = -1;
+        let velocity = -1;
 
-        if (e.type === 'mousedown') statusByte = 144;
-        if (e.type === 'mouseup' || e.type === 'mouseleave') statusByte = 128;
- 
-        if (statusByte === 144) usePublish('midiMessage', {
+        if (e.type === 'mousedown') {
+            statusByte = 144;
+            velocity = 80;
+        };
+
+        if (e.type === 'mouseup' || e.type === 'mouseleave') {
+            statusByte = 128;
+            velocity = 0;
+        };
+
+        const [dataByte1, dataByte2] = [noteNumber, velocity];
+         
+        usePublish('midiMessage', {
             uid,
-            data: [statusByte, noteNumber, 80]
+            data: [statusByte, dataByte1, dataByte2]
         });
-        
-        if (statusByte === 128) usePublish('midiMessage', {
-            uid,
-            data: [statusByte, noteNumber, 0]
-        });
+
+        updateActiveNotes(statusByte, noteNumber);
     };
 
     return (
         <>
+            <div className={css.belowRangeArrow}></div>
             <div className={css.Keyboard} ref={keyboardRef}>
-                {keys.map(key =>
-                    <button
-                        name="key"
-                        key={`key${key.name}`}
-                        className={`${activeNotes[+key.value + octave * 12].isActive
-                            ? css[`${key.className}--active`]
-                            : css[key.className]
-                        }`}
-                        value={key.value}
-                        onMouseDown={onNote}
-                        onMouseLeave={onNote}
-                        onMouseUp={onNote}
-                        style={{ left: `${keyWidth * key.leftOffset}%` }}
-                    />
-                )}
+                {keys.map(key => {
+                    const isActive = activeNotes[+key.value + octave * 12].isActive
+                    
+                    return (
+                        <button
+                            name="key"
+                            key={`key${key.name}`}
+                            className={css[`${key.className}${isActive ? '--active' : ''}`]}
+                            value={key.value}
+                            onMouseDown={onNote}
+                            onMouseLeave={onNote}
+                            onMouseUp={onNote}
+                            style={{ left: `${keyWidth * key.leftOffset}%` }}
+                        />
+                    )
+                })}
             </div>
+            <div className={css.aboveRangeArrow}></div>
         </>
     )
 }
