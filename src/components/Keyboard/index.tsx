@@ -5,10 +5,6 @@ import css from './index.module.css';
 
 const uid = uuidv4();
 
-const keyboardWidth = 100;
-const numMajorKeys = 7;
-const keyWidth = keyboardWidth / numMajorKeys;
-
 const keys = [
     { name: 'C', leftOffset: 0, value: 0, className: "MajorKey" },
     { name: 'D', leftOffset: 1, value: 2, className: "MajorKey" },
@@ -24,6 +20,9 @@ const keys = [
     { name: 'Bb', leftOffset: 5.75, value: 10, className: "MinorKey" },
 ];
 
+const numMajorKeys = keys.reduce((count, current) => current.className === "MajorKey" ? count + 1 : count, 0);
+const keyWidth = 100 / numMajorKeys;
+
 function Keyboard() {
     const keyboardRef = useRef<HTMLDivElement>(null);
     const [octave, setOctave] = useState(5);
@@ -34,7 +33,7 @@ function Keyboard() {
 
         keyboardRef.current.style.setProperty(
             "--key-width",
-            `calc(${keyboardWidth}% / ${numMajorKeys})`
+            `${keyWidth}%`
         );
     }, []);
 
