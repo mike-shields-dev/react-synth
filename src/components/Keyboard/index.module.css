@@ -6,9 +6,17 @@
   
     height: 200px;
     margin: 0 auto;
-    max-width: 600px;
+    width: 90%;
     position: relative;
-    width: 100vw;
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "out-of-range--left keys out-of-range--right";
+}
+
+.Keyboard__keys {
+    grid-area: keys;
+    position: relative;
 }
 
 
@@ -51,8 +59,16 @@
     width: calc(var(--key-width) / 2);
 }
 
-.belowRangeArrow {
+.Keyboard__out-of-range-indicator--left {
+    grid-area: out-of-range--left;
     border: 1px solid red;
     aspect-ratio: 1;
-    width: 50px;
+    width: 25px;
+}
+
+.Keyboard__out-of-range-indicator--right {
+    grid-area: out-of-range--right;
+    border: 1px solid red;
+    aspect-ratio: 1;
+    width: 25px;
 }

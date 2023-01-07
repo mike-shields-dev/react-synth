@@ -1,7 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { usePublish, useSubscribe, MidiMessage } from '../../hooks/PubSub';
+import { MidiMessage, usePublish, useSubscribe } from '../../hooks/PubSub';
 import css from './index.module.css';
+import ArrowIcon from '../ArrowIcon';
+
+interface NoteState {
+    isActive: boolean;
+}    
+
 
 const uid = uuidv4();
 
@@ -26,7 +32,9 @@ const keyWidth = 100 / numMajorKeys;
 function Keyboard() {
     const keyboardRef = useRef<HTMLDivElement>(null);
     const [octave, setOctave] = useState(5);
-    const [activeNotes, setActiveNotes] = useState(Array(128).fill({ isActive: false }));
+    const [activeNotes, setActiveNotes] = useState<NoteState[]>(Array(128).fill({ isActive: false }));
+    const [isLeftArrowActive, setLeftArrowActive] = useState(false);
+    const [isRightArrowActive, setRightArrowActive] = useState(false);
 
     useEffect(() => {        
         if (!keyboardRef.current) return;
@@ -36,6 +44,15 @@ function Keyboard() {
             `${keyWidth}%`
         );
     }, []);
+
+    useEffect(() => {
+        const notesBelowKeyboardRange = activeNotes.slice(0, octave * 12);
+        const notesAboveKeyboardRange = activeNotes.slice(keys.length + 1 + octave * 12);
+
+        setLeftArrowActive(notesBelowKeyboardRange.some(note => note.isActive));
+        setRightArrowActive(notesAboveKeyboardRange.some(note => note.isActive));
+
+    }, [activeNotes, octave])
 
     function updateActiveNotes(statusByte: number, noteNumber: number) {
         let isActive = false;
@@ -94,9 +111,15 @@ function Keyboard() {
     };
 
     return (
-        <>
-            <div className={css.belowRangeArrow}></div>
-            <div className={css.Keyboard} ref={keyboardRef}>
+        <div className={css.Keyboard}>
+                <ArrowIcon
+                    size="1rem"
+                    fillColors={["#ff8000", "#9e9e9e"]}
+                    isFlipped={true}
+                    isActive={isLeftArrowActive}
+                /> 
+            
+            <div className={css.Keyboard__keys} ref={keyboardRef}>
                 {keys.map(key => {
                     const isActive = activeNotes[+key.value + octave * 12].isActive
                     
@@ -105,17 +128,23 @@ function Keyboard() {
                             name="key"
                             key={`key${key.name}`}
                             className={css[`${key.className}${isActive ? '--active' : ''}`]}
-                            value={key.value}
                             onMouseDown={onNote}
                             onMouseLeave={onNote}
                             onMouseUp={onNote}
                             style={{ left: `${keyWidth * key.leftOffset}%` }}
+                            value={key.value}
                         />
                     )
                 })}
             </div>
-            <div className={css.aboveRangeArrow}></div>
-        </>
+            
+            <ArrowIcon
+                size="1rem"
+                fillColors={["#ff8000", "#9e9e9e"]}
+                isFlipped={false}
+                isActive={isRightArrowActive}
+            /> 
+        </div>
     )
 }
 
